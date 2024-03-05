@@ -1,8 +1,8 @@
-// models/tutor.js
+// models/learner.js
 const mongoose = require('mongoose');
 const getDbConnection = require('../../config/database');
 
-const tutorSchema = new mongoose.Schema({
+const learnerSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -18,7 +18,7 @@ const tutorSchema = new mongoose.Schema({
     }
 });
 
-const dbConnection = getDbConnection('Tutor');
-const Tutors = dbConnection.model('Tutors', tutorSchema, 'registered');
+const dbConnection = getDbConnection('Learners');
+const Learners = dbConnection.model('Learners', learnerSchema, 'registered');
 
-module.exports = Tutors;
+module.exports = Learners

@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const tutorRoutes = require('../routes/tutors/tutorsRoute');
+const tutorsRoutes = require('../routes/tutors/tutorsRoute');
+const learnersRoutes = require('../routes/learners/learnersRoute');
 const cors = require('cors');
 
 const app = express();
@@ -9,8 +10,13 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Routes
-app.use('/api/tutors', tutorRoutes);
+// ***************Routes*************************
+
+//*****************for tutors***************** */
+app.use('/api/tutors', tutorsRoutes);
+
+//*****************for learners***************** */
+app.use('/api/learners', learnersRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3000;

@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const tutorsRoutes = require('../routes/tutors/tutorsRoute');
 const learnersRoutes = require('../routes/learners/learnersRoute');
 const cors = require('cors');

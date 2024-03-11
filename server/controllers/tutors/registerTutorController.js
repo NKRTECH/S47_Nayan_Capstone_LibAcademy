@@ -23,7 +23,7 @@ const registerTutorController = async (req, res) => {
         
         // Omit the password field from the response for security reasons
         const { password, ...tutorDataWithoutPassword } = tutor.toObject();
-
+        console.log(tutorDataWithoutPassword);
         res.status(201).send(tutorDataWithoutPassword);
     } catch (error) {
         // Handle errors

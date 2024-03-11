@@ -3,9 +3,12 @@ const mongoose = require('mongoose');
 const getDbConnection = require('../../config/database');
 
 const tutorSchema = new mongoose.Schema({
-    name: {
+    firstName: {
         type: String,
         required: true
+    },
+    lastName: {
+        type: String,
     },
     email: {
         type: String,

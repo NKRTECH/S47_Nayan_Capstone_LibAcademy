@@ -8,7 +8,7 @@ export const registerTutor = createAsyncThunk(
     try {
       const response = await tutorRegistrationAPI(formData);
       // Assuming your backend returns some data upon successful registration
-      console.log('Registration successful!');
+      console.log('Registration successful!', response.data);
       return response.data;
     } catch (error) {
       console.error('Error in registerTutor:', error.response.data);
@@ -21,7 +21,8 @@ const tutorSlice = createSlice({
   name: 'tutor',
   initialState: {
     status: 'idle', // Possible values: 'idle', 'loading', 'succeeded', 'failed'
-    error: null
+    error: null,
+    tutorData: null // Initially null, will store tutor data after successful registration
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -30,9 +31,11 @@ const tutorSlice = createSlice({
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(registerTutor.fulfilled, (state) => {
+      .addCase(registerTutor.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.error = null;
+        state.tutorData = action.payload; // Store the tutor data upon successful registration
+        console.log(action.payload);
       })
       .addCase(registerTutor.rejected, (state, action) => {
         state.status = 'failed';

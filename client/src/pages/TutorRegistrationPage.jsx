@@ -2,9 +2,11 @@ import { useState } from 'react';
 import './TutorRegistrationPage.css';
 import { useDispatch } from 'react-redux';
 import { registerTutor } from '../features/tutors/TutorsSlice'; // assuming you have tutorSlice.js with actions and reducers for tutor registration
+import { useNavigate } from 'react-router-dom';
 
 const TutorRegistrationPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Using useNavigate hook to handle navigation
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -23,10 +25,15 @@ const TutorRegistrationPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerTutor(formData));
-    // You can add further logic here like redirection after successful registration
+    dispatch(registerTutor(formData))
+      .then(() => {
+        // Redirect to the homepage after successful registration
+        navigate('/home-tutor');
+      })
+      .catch(error => {
+        console.error('Registration failed:', error);
+      });
   };
-
   return (
     <div className="tutor-registration-container">
       <h2>Tutor Registration</h2>

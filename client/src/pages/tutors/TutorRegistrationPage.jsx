@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import './TutorRegistrationPage.css';
 import { useDispatch } from 'react-redux';
-import { registerTutor } from '../features/tutors/TutorsSlice'; // assuming you have tutorSlice.js with actions and reducers for tutor registration
 import { useNavigate } from 'react-router-dom';
+import { tutorRegisterThunk } from '../../features/tutors/TutorThunks';
 
 const TutorRegistrationPage = () => {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const TutorRegistrationPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerTutor(formData))
+    dispatch(tutorRegisterThunk(formData))
       .then(() => {
         // Redirect to the homepage after successful registration
         navigate('/home-tutor');

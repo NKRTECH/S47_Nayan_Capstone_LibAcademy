@@ -12,4 +12,14 @@ const tutorRegistrationAPI = async (formData) => {
  }
 };
 
-export { tutorRegistrationAPI };
+const tutorLoginAPI = async (formData) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/tutors/login`, formData);
+    return response.data;
+  } catch (error) {
+    console.error('Error in tutorLoginAPI:', error);
+    throw error; // Re-throw the error if you want to handle it further up the call stack
+  }
+};
+
+export { tutorRegistrationAPI, tutorLoginAPI };

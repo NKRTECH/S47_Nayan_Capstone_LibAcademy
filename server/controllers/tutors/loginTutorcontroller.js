@@ -1,6 +1,6 @@
 // controllers/loginTutorController.js
 const bcrypt = require('bcrypt');
-const Tutors = require('../../models/tutors/tutors');
+const Tutors = require('../../models/tutors/tutorsModel');
 
 const loginTutorController = async (req, res) => {
     try {

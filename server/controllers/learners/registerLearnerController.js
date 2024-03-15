@@ -1,6 +1,6 @@
 // controllers/registerLearnerController.js
 const bcrypt = require('bcrypt');
-const Learner = require('../../models/learners/learners');
+const Learner = require('../../models/learners/learnersModel');
 
 const registerLearnerController = async (req, res) => {
     try {

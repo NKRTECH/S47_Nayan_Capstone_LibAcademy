@@ -21,7 +21,7 @@ const tutorSchema = new mongoose.Schema({
     }
 });
 
-const dbConnection = getDbConnection('Tutor');
-const Tutors = dbConnection.model('Tutors', tutorSchema, 'registered');
+const dbConnection = getDbConnection('LibAcademy');
+const Tutors = dbConnection.model('Tutors', tutorSchema, 'registered_Tutors');
 
 module.exports = Tutors;

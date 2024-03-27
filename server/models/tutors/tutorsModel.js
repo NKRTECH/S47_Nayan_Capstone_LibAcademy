@@ -19,9 +19,11 @@ const tutorSchema = new mongoose.Schema({
         type: String,
         required: true
     }
+}, {
+    timestamps: true
 });
 
-const dbConnection = getDbConnection('LibAcademy');
+const dbConnection = getDbConnection();
 const Tutors = dbConnection.model('Tutors', tutorSchema, 'registered_Tutors');
 
 module.exports = Tutors;

@@ -1,8 +1,25 @@
 const express = require("express");
 const router = express.Router();
-// const addCoursesController = require("../../controllers/courses/addCoursesController");
-const getCoursesController = require("../../controllers/courses/getCoursesController");
+const multer = require('multer');
+const Course = require('../../models/courses/coursesModel'); 
 
-router.get('/getCourses', getCoursesController);
+const getCoursesController = require("../../controllers/courses/getCoursesController");
+const uploadCourseController = require("../../controllers/courses/uploadCourseController");
+
+// Multer configuration for handling file uploads
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    // Set the destination directory for uploaded files
+    cb(null, 'uploads/courses'); // Change 'uploads/' to your desired upload directory
+  },
+  filename: function(req, file, cb) {
+    // Set the file name for uploaded files
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
+
+// POST route for creating a new course
+router.post('/create', upload.single('file'), uploadCourseController);
 
 module.exports = router

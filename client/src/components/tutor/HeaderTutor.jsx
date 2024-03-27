@@ -20,10 +20,9 @@ const HeaderTutor = () => {
           {/* Conditionally render the tutor's name if registration is successful */}
           {status === 'succeeded' && tutorData && (
             <li>Welcome &nbsp;{tutorData.firstName}</li>
-          ) || <li><Link to="/tutor-registration">Tutor Registration</Link></li>}
-          {status !== 'succeeded' && <li><Link to="/tutor-login">Tutor Login</Link></li>}
-
-
+          ) || <li><Link to="/tutor/registration">Tutor Registration</Link></li>}
+          {status === 'succeeded' && <li><Link to="/tutor/profile">Profile</Link></li>}
+          {status !== 'succeeded' && <li><Link to="/tutor/login">Tutor Login</Link></li>}
         </ul>
       </nav>
     </header>

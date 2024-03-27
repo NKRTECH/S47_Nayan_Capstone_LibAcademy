@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { tutorLoginThunk, tutorRegisterThunk } from './TutorThunks';
 
 
@@ -11,9 +11,16 @@ const tutorSlice = createSlice({
     isRegistered: false,
     tutorData: null // Initially null, will store tutor data after successful registration
   },
-  reducers: {},
+  reducers: {
+    // updateTutorData: (state, action) => {
+    //   const{firstName, lastName} = action.payload;
+    //   state.tutorData.firstName = firstName;
+    //   state.tutorData.lastName = lastName;
+    // }
+  },
   extraReducers: (builder) => {
-    builder
+    builder  
+      //**********************tutor registration **************** */
       .addCase(tutorRegisterThunk.pending, (state) => {
         state.status = 'loading';
         state.error = null;
@@ -27,7 +34,8 @@ const tutorSlice = createSlice({
       .addCase(tutorRegisterThunk.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload ? action.payload.message : 'Something went wrong';
-      })
+      })  
+      //**********************tutor login **************** */
       .addCase(tutorLoginThunk.pending, (state) => {
         state.status = 'loading';
         state.error = null;

@@ -1,12 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-import RenderTutorPages from './pages/tutors/RenderTutorPages';
+import MainRoutes from './MainRoutes';
 
 const App = () => {
   return (
     <>
-    
-    <RenderTutorPages/>
+    <MainRoutes/>
     </>
   );
 };

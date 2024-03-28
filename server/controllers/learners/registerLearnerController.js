@@ -23,7 +23,7 @@ const registerLearnerController = async (req, res) => {
         const {password, ...learnerDataWithoutPassword} = newLearner.toObject();
 
         // Return success response
-        res.status(201).json({ message: 'Learner registered successfully', learner: learnerDataWithoutPassword });
+        res.status(201).json({ message: 'Learner registered successfully', data: learnerDataWithoutPassword });
     } catch (error) {
         // Handle errors
         console.error('Error registering learner:', error);

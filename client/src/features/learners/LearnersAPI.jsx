@@ -12,4 +12,14 @@ const learnerRegistrationAPI = async (formData) => {
  }
 };
 
-export { learnerRegistrationAPI }
+const learnerLoginAPI = async (formData) => {
+ try {
+    const response = await axios.post(`${BASE_URL}/learners/login`, formData);
+    return response.data;
+ } catch (error) {
+    console.error('Error in learnerLoginAPI:', error);
+    throw error; // Re-throw the error if you want to handle it further up the call stack
+ }
+};
+
+export { learnerRegistrationAPI, learnerLoginAPI };

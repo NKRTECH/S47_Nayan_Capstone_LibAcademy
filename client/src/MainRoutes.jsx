@@ -7,6 +7,7 @@ import Layout from './pages/tutors/Layout';
 import TutorProfilePage from './pages/tutors/TutorProfilePage';
 import UploadCoursePage from './pages/courses/UploadCoursePage';
 import LearnerRegistrationPage from './pages/learners/LearnerRegistrationPage';
+import LearnerLoginPage from './pages/learners/LearnerLoginPage';
 
 
 function MainRoutes() {
@@ -20,6 +21,7 @@ function MainRoutes() {
 
       {/* *******************************Learner Routes ************************** */}
       <Route path="/learner/registration" element={<Layout><LearnerRegistrationPage /></Layout>} />
+      <Route path="/learner/login" element={<Layout><LearnerLoginPage /></Layout>} />
       
 
       {/******************************* Course Routes ***************************/}

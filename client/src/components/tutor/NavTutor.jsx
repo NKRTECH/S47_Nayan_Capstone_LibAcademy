@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import './HeaderTutor.css';
+import './NavTutor.css';
 
-const HeaderTutor = () => {
+const NavTutor = () => {
   const { status, tutorData } = useSelector(state => state.tutor);
 
   return (
@@ -13,7 +13,7 @@ const HeaderTutor = () => {
       </div>
       <nav className="navigation">
         <ul>
-          <li><Link to="/">Home</Link></li>
+          <li><Link to="/tutor-home">Home</Link></li>
           <li><Link to="/courses">Courses</Link></li>
           <li><Link to="/about">About Us</Link></li>
           
@@ -29,4 +29,4 @@ const HeaderTutor = () => {
   );
 };
 
-export default HeaderTutor;
+export default NavTutor;

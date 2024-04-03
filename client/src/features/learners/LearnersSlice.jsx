@@ -9,6 +9,7 @@ const learnerSlice = createSlice({
     learnerData: '',
     loading: false,
     error: null,
+    isLoggedIn: false
   },
   extraReducers: (builder) => {
     builder  
@@ -35,8 +36,9 @@ const learnerSlice = createSlice({
       .addCase(learnerLoginThunk.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.error = null;
-        state.learnerData = action.payload; 
-        console.log(action.payload);
+        state.learnerData = action.payload;
+        state.isLoggedIn = true;
+        // console.log(action.payload);
       })
       .addCase(learnerLoginThunk.rejected, (state, action) => {
         state.status = 'failed';

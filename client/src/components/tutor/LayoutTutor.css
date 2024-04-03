@@ -1,0 +1,9 @@
+/* Layout.css */
+
+/* If you're using a class for the main content container */
+.main-content {
+    padding-top: 80px; /* Adjust based on the height of your header */
+   }
+   
+   /* If you're styling the <main> tag directly */
+   

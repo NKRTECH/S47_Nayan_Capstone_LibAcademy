@@ -14,3 +14,14 @@ export const createCourseAPI = async (courseData) => {
         throw error; // Re-throw the error if you want to handle it further up the call stack
     }
 };
+
+export const getCourseCategoriesAPI = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/courses/courseCategories`);
+        console.log('Course categories fetched successfully!', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error in getCourseCategoriesAPI:', error);
+        throw error; // Re-throw the error if you want to handle it further up the call stack
+    }
+}

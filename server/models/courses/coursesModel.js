@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const getDbConnection = require('../../config/database');
 
 const courseSchema = new mongoose.Schema({
-  category: { type: String, required: true },
+  category: { type: mongoose.Schema.Types.ObjectId, ref: 'CourseCategory', required: true },
   title: { type: String, required: true },
   description: { type: String, required: true },
   fileUrl: { type: String },

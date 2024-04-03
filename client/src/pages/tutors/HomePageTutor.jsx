@@ -1,4 +1,3 @@
-import HeaderTutor from "../../components/tutor/HeaderTutor";
 
 const HomePageTutor = ()=>{
     return (

@@ -5,6 +5,9 @@ import './NavTutor.css';
 
 const NavTutor = () => {
   const { status, tutorData } = useSelector(state => state.tutor);
+  // console.log('tutorData:--',tutorData)
+  // console.log(localStorage.getItem('tutorData'));
+  // console.log('status:--',status);
 
   return (
     <header className="header">
@@ -13,16 +16,15 @@ const NavTutor = () => {
       </div>
       <nav className="navigation">
         <ul>
-          <li><Link to="/tutor-home">Home</Link></li>
+          <li><Link to="/tutor/">Home</Link></li>
           <li><Link to="/courses">Courses</Link></li>
           <li><Link to="/about">About Us</Link></li>
           
           {/* Conditionally render the tutor's name if registration is successful */}
-          {status === 'succeeded' && tutorData && (
+          {tutorData && (
             <li>Welcome &nbsp;{tutorData.firstName}</li>
-          ) || <li><Link to="/tutor/registration">Tutor Registration</Link></li>}
-          {status === 'succeeded' && <li><Link to="/tutor/profile">Profile</Link></li>}
-          {status !== 'succeeded' && <li><Link to="/tutor/login">Tutor Login</Link></li>}
+          ) }
+          {tutorData && <li><Link to="/tutor/profile">Profile</Link></li>}
         </ul>
       </nav>
     </header>

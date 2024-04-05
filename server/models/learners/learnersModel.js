@@ -3,9 +3,12 @@ const mongoose = require('mongoose');
 const getDbConnection = require('../../config/database');
 
 const learnerSchema = new mongoose.Schema({
-    name: {
+    firstName: {
         type: String,
         required: true
+    },
+    lastName: {
+        type: String,
     },
     email: {
         type: String,
@@ -20,7 +23,7 @@ const learnerSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const dbConnection = getDbConnection();
+const dbConnection = getDbConnection;
 const Learners = dbConnection.model('Learners', learnerSchema, 'registered_Learners');
 
 module.exports = Learners

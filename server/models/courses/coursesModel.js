@@ -18,7 +18,7 @@ courseSchema.index({ title: 1 }); // Create an index on the 'title' field
 courseSchema.index({ category: 1 }); // Create an index on the 'category' field
 
 
-const dbConnection = getDbConnection();
+const dbConnection = getDbConnection;
 const Courses = dbConnection.model('Courses', courseSchema, 'courses');
 
 module.exports = Courses;

@@ -23,7 +23,7 @@ const tutorSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const dbConnection = getDbConnection();
+const dbConnection = getDbConnection;
 const Tutors = dbConnection.model('Tutors', tutorSchema, 'registered_Tutors');
 
 module.exports = Tutors;

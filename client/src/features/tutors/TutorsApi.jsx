@@ -5,6 +5,7 @@ const BASE_URL = 'http://localhost:3000/api'; // Replace this with your actual b
 const tutorRegistrationAPI = async (formData) => {
  try {
     const response = await axios.post(`${BASE_URL}/tutors/register`, formData);
+    console.log('tutorRegistrationAPI:--',response);
     return response.data;
  } catch (error) {
     console.error('Error in tutorRegistrationAPI:', error);
@@ -15,6 +16,7 @@ const tutorRegistrationAPI = async (formData) => {
 const tutorLoginAPI = async (formData) => {
   try {
     const response = await axios.post(`${BASE_URL}/tutors/login`, formData);
+    console.log('tutorLoginAPI:--',response);
     return response.data;
   } catch (error) {
     console.error('Error in tutorLoginAPI:', error);

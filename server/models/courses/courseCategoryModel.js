@@ -10,7 +10,7 @@ const courseCategorySchema = new mongoose.Schema({
   optimisticConcurrency: true
 });
 
-const dbConnection = getDbConnection();
+const dbConnection = getDbConnection;
 const CourseCategory = dbConnection.model('CourseCategory', courseCategorySchema, 'courseCategory');
 
 module.exports = CourseCategory;

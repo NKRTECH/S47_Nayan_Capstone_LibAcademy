@@ -3,7 +3,6 @@ import './LearnerLoginPage.css'; // Adjust the import path as necessary
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { learnerLoginThunk } from '../../features/learners/LearnersThunks';
-// import { learnerLoginThunk } from '../../features/learners/LearnerThunks';
 
 const LearnerLoginPage = () => {
     const dispatch = useDispatch();
@@ -14,6 +13,9 @@ const LearnerLoginPage = () => {
        email: '',
        password: ''
     });
+
+    // State to track if navigation has occurred
+    const [hasNavigated, setHasNavigated] = useState(false);
 
     const handleChange = (e) => {
        const { name, value } = e.target;
@@ -29,10 +31,13 @@ const LearnerLoginPage = () => {
      };
 
     useEffect(() => {
-        if (isLoggedIn) {
-          navigate('/learner-home');
+        // Only navigate if isLoggedIn is true and hasNavigated is false
+        if (isLoggedIn && !hasNavigated) {
+          navigate('/learner/');
+          // Set hasNavigated to true to prevent further navigation
+          setHasNavigated(true);
         }
-     }, [isLoggedIn, navigate]);
+     }, [isLoggedIn, navigate, hasNavigated]); // Include hasNavigated in the dependency array
 
      return (
         <div className="login-box">

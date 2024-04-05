@@ -1,6 +1,8 @@
-// controllers/loginLearnerController.js
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const Learners = require('../../models/learners/learnersModel');
+
+const secret_key = 'mysecretkey';
 
 const loginLearnerController = async (req, res) => {
     try {
@@ -18,7 +20,27 @@ const loginLearnerController = async (req, res) => {
             return res.status(401).json({ message: 'Invalid password' });
         }
 
-        res.status(200).json({ data: learner });
+        // Generate JWT token
+        const token = jwt.sign(
+            { userId: learner._id, email: learner.email, role: 'learner' },
+            secret_key,
+            // process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        // Set JWT as an HTTP-only cookie
+        res.cookie('jwt', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production', // Secure cookie in production
+            sameSite: 'strict', // Prevent CSRF attacks
+            maxAge: 3600000, // 1 hour expiration time
+            // other cookie options if needed
+        });
+
+        // let {...password, ...learnerDataWithoutPassword } = learner.toObject();
+
+        // Send success response
+        res.status(200).json({ token, learner:learner.toObject()});
     } catch (error) {
         // Handle errors
         console.error('Error logging in learner:', error);

@@ -1,21 +1,21 @@
-// TutorProfilePage.jsx
+// LearnerProfilePage.jsx
 import React, { useState } from 'react';
-import axios from 'axios'; // Import Axios
+import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import './TutorProfilePage.css'; // Import CSS file for styling
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../../features/tutors/TutorsSlice';
+import './LearnerProfilePage.css'; // Import CSS file for styling
+import { logout } from '../../features/learners/LearnersSlice';
 
-const TutorProfilePage = () => {
-  const tutorData = useSelector(state => state.tutor.tutorData);
+const LearnerProfilePage = () => {
+  const learnerData = useSelector(state => state.learner.learnerData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // State to manage editable fields
   const [editableData, setEditableData] = useState({
-    firstName: tutorData.firstName || '',
-    lastName: tutorData.lastName || '',
-    email: tutorData.email || '',
+    firstName: learnerData.firstName || '',
+    lastName: learnerData.lastName || '',
+    email: learnerData.email || '',
     // Add more fields as needed
   });
 
@@ -40,7 +40,7 @@ const TutorProfilePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put('/api/tutor/profile', editableData);
+      const response = await axios.put('/api/learner/profile', editableData);
       console.log('Profile updated:', response.data);
       // Optionally update local state or Redux store with updated data
       // Exit edit mode after successful update
@@ -52,15 +52,18 @@ const TutorProfilePage = () => {
   };
 
   const handleLogout = () => {
-    // Dispatch logout action
     dispatch(logout());
+    // // Clear learner data and token from localStorage
+    // localStorage.removeItem('learnerData');
+    // localStorage.removeItem('token');
+
     // Redirect to the login page or perform any other necessary action
     navigate('/');
   };
 
   return (
     <div className="profile-page">
-      <h2 className="profile-heading">Tutor Profile</h2>
+      <h2 className="profile-heading">Learner Profile</h2>
       {isEditMode ? (
         <form onSubmit={handleSubmit} className="profile-form">
           <div className="form-group">
@@ -101,16 +104,15 @@ const TutorProfilePage = () => {
         </form>
       ) : (
         <div className="profile-read-only">
-          <div><strong>First Name:</strong> {tutorData.firstName}</div>
-          <div><strong>Last Name:</strong> {tutorData.lastName}</div>
-          <div><strong>Email:</strong> {tutorData.email}</div>
+          <div><strong>First Name:</strong> {learnerData.firstName}</div>
+          <div><strong>Last Name:</strong> {learnerData.lastName}</div>
+          <div><strong>Email:</strong> {learnerData.email}</div>
           <button onClick={toggleEditMode} className="btn-edit">Edit</button>
-          <button onClick={handleLogout} className="btn-logout">Logout</button> {/* Logout button */}
-
+          <button onClick={handleLogout} className="btn-logout">Logout</button>
         </div>
       )}
     </div>
   );
 };
 
-export default TutorProfilePage;
+export default LearnerProfilePage;

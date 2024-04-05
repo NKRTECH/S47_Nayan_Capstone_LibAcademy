@@ -28,7 +28,7 @@ const TutorRegistrationPage = () => {
     dispatch(tutorRegisterThunk(formData))
       .then(() => {
         // Redirect to the homepage after successful registration
-        navigate('/tutor-home');
+        navigate('/tutor/');
       })
       .catch(error => {
         console.error('Registration failed:', error);

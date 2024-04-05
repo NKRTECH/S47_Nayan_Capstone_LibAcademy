@@ -7,8 +7,10 @@ export const learnerRegisterThunk = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const response = await learnerRegistrationAPI(formData);
-      console.log('Registration successful!', response.data);
-      return response.data;
+      console.log('Registration successful!', response);
+      const { token } = response; // Assuming the API response contains a token
+      localStorage.setItem('token', token); // Store the token in localStorage
+      return response;
     } catch (error) {
       console.error('Error in registerLearner:', error.response.data);
       return thunkAPI.rejectWithValue(error.response.data);
@@ -21,8 +23,13 @@ export const learnerLoginThunk = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const response = await learnerLoginAPI(formData);
-      console.log('Login successful!', response.data);
-      return response.data;
+      console.log('Login successful!', response);
+      // const { token, learner } = response; // Assuming the API response contains a token
+      // console.log('learner:--', learner);
+      // localStorage.setItem('learnerData', JSON.stringify(learner)); // Save to local storage
+      // localStorage.setItem('token', token); // Store the token in localStorage
+      // console.log('Token:--', token);
+      return response;
     } catch (error) {
       console.error('Error in loginLearner:', error.response.data);
       return thunkAPI.rejectWithValue(error.response.data);

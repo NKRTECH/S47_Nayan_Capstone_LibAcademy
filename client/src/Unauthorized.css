@@ -1,0 +1,28 @@
+.unauthorized-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+  }
+  
+  .unauthorized-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .unauthorized-message {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .unauthorized-link {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .unauthorized-link:hover {
+    text-decoration: underline;
+  }
+  

@@ -24,11 +24,24 @@ export const tutorLoginThunk = createAsyncThunk(
        try {
          const response = await tutorLoginAPI(credentials);
          // Assuming your backend returns a token upon successful login
-         console.log('Login successful!', response.data);
-         return response.data;
+         console.log('Login successful!', response);
+         return response;
        } catch (error) {
          console.error('Error in login:', error.response.data);
          return thunkAPI.rejectWithValue(error.response.data);
        }
     }
    );
+
+   export const tutorLogoutThunk = () => async (dispatch) => {
+    try {
+      // Clear tutor data and token from localStorage
+      localStorage.removeItem('tutorData');
+      localStorage.removeItem('token');
+      // Dispatch the logout action to reset the Redux state
+      dispatch(logout());
+    } catch (error) {
+      // Handle any errors
+      console.error('Error logging out:', error);
+    }
+  };

@@ -21,7 +21,7 @@ const lessonSchema = new mongoose.Schema({
 lessonSchema.index({ title: 1 }); // Create an index on the 'title' field
 lessonSchema.index({ courseId: 1 }); // Create an index on the 'courseId' field
 
-const dbConnection = getDbConnection();
+const dbConnection = getDbConnection;
 const Lesson = dbConnection.model('Lessons', lessonSchema, 'lessons');
 
 module.exports = Lesson;

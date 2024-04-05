@@ -18,4 +18,4 @@ const getDbConnection = () => {
     return connection;
 };
 
-module.exports = getDbConnection;
+module.exports = getDbConnection();

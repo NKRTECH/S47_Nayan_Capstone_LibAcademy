@@ -1,6 +1,10 @@
 // controllers/tutorController.js
 const bcrypt = require('bcrypt');
 const Tutors = require('../../models/tutors/tutorsModel');
+const jwt = require('jsonwebtoken');
+
+const secret_key = 'mysecretkey';
+
 
 const registerTutorController = async (req, res) => {
     try {
@@ -20,11 +24,17 @@ const registerTutorController = async (req, res) => {
             ...req.body,
             password: hashedPassword // Replace plain password with hashed password
         });
-        
+
+        const token = jwt.sign(
+            { userId: tutor._id, email: tutor.email, role: 'tutor' },
+            secret_key,
+            // process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
         // Omit the password field from the response for security reasons
         const { password, ...tutorDataWithoutPassword } = tutor.toObject();
         console.log(tutorDataWithoutPassword);
-        res.status(201).json({data:tutorDataWithoutPassword});
+        res.status(201).json({tutor:tutorDataWithoutPassword, token});
     } catch (error) {
         // Handle errors
         console.error('Error registering tutor:', error);

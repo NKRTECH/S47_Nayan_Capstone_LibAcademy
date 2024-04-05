@@ -30,7 +30,7 @@ const TutorLoginPage = () => {
 
     useEffect(() => {
         if (isLoggedIn) {
-          navigate('/tutor-home');
+          navigate('/tutor/');
         }
      }, [isLoggedIn, navigate]);
 

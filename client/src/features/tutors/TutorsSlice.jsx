@@ -36,14 +36,14 @@ const tutorSlice = createSlice({
         state.status = 'succeeded';
         state.error = null;
         // state.tutorData = action.payload; // Store the tutor data upon successful registration
+        console.log(action.payload);
         localStorage.setItem('tutorData', JSON.stringify(action.payload.tutor)); // Save to local storage
         localStorage.setItem('token', action.payload.token); // Store the token in localStorage
-        // console.log(action.payload);
       })
       .addCase(tutorRegisterThunk.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload ? action.payload.message : 'Something went wrong';
-      })  
+      })
       //**********************tutor login **************** */
       .addCase(tutorLoginThunk.pending, (state) => {
         state.status = 'loading';
@@ -57,7 +57,7 @@ const tutorSlice = createSlice({
         localStorage.setItem('tutorData', JSON.stringify(action.payload.tutor)); // Save to local storage
         localStorage.setItem('token', action.payload.token); // Store the token in localStorage
 
-        console.log(action.payload);
+        console.log(action.payload.tutor);
       })
       .addCase(tutorLoginThunk.rejected, (state, action) => {
         state.status = 'failed';

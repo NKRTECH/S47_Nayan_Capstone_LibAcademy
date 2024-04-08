@@ -40,7 +40,7 @@ const TutorProfilePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put('/api/tutor/profile', editableData);
+      const response = await axios.put('http://localhost:3000/api/tutor/profile', editableData);
       console.log('Profile updated:', response.data);
       // Optionally update local state or Redux store with updated data
       // Exit edit mode after successful update
@@ -56,6 +56,8 @@ const TutorProfilePage = () => {
     dispatch(logout());
     // Redirect to the login page or perform any other necessary action
     navigate('/');
+    window.location.reload();
+
   };
 
   return (

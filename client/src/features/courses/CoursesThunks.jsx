@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createCourseAPI } from "./CoursesAPI";
+import { getCoursesByCategoriesAPI } from '../../features/courses/CoursesAPI';
 
 export const createCourseThunk = createAsyncThunk(
     'courses/create',
@@ -14,4 +15,15 @@ export const createCourseThunk = createAsyncThunk(
             return thunkAPI.rejectWithValue(error.response.data);
         }
     }
+);
+
+
+export const fetchCoursesByCategories = createAsyncThunk(
+ 'courses/fetchCoursesByCategories',
+ async (categories) => {
+    console.log('Categories thunk:-- ', categories);
+    const response = await getCoursesByCategoriesAPI(categories);
+    console.log('Courses fetched successfully!', response);
+    return response;
+ }
 );

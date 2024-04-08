@@ -1,16 +1,35 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { createCourseThunk } from '../../features/courses/CoursesThunks';
 import './UploadCoursePage.css'; // Import CSS file for styling
+import { getCourseCategoriesAPI } from '../../features/courses/CoursesAPI';
 
 const UploadCoursePage = () => {
   const dispatch = useDispatch();
+  const tutorId = useSelector((state) => state.tutor.tutorData._id);
+  
   const [courseData, setCourseData] = useState({
-    category: '',
+    category: [],
     title: '',
     description: '',
+    tutorId: tutorId,
     file: null // For storing the uploaded file
   });
+
+  const [courseCategories, setCourseCategories] = useState([]);
+  
+  const fetchCategories = async () => {
+    try {
+      const categories = await getCourseCategoriesAPI();
+      console.log('Categories: ', categories);
+      setCourseCategories(categories);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const handleChange = (e) => {
     setCourseData({
@@ -18,6 +37,21 @@ const UploadCoursePage = () => {
       [e.target.name]: e.target.value
     });
   };
+  const handleCategoryChange = (e) => {
+    const { name, checked, value } = e.target;
+    if (checked) {
+      setCourseData((prevState) => ({
+        ...prevState,
+        category: [...prevState.category, value],
+      }));
+    } else {
+      setCourseData((prevState) => ({
+        ...prevState,
+        category: prevState.category.filter((categoryId) => categoryId !== value),
+      }));
+    }
+  };
+  
 
   const handleFileChange = (e) => {
     setCourseData({
@@ -47,10 +81,6 @@ const UploadCoursePage = () => {
       <h2>Upload New Course</h2>
       <form onSubmit={handleSubmit} className="upload-course-form">
         <div className="form-group">
-          <label htmlFor="category">Category:</label>
-          <input type="text" id="category" name="category" value={courseData.category} onChange={handleChange} />
-        </div>
-        <div className="form-group">
           <label htmlFor="title">Title:</label>
           <input type="text" id="title" name="title" value={courseData.title} onChange={handleChange} />
         </div>
@@ -58,6 +88,24 @@ const UploadCoursePage = () => {
           <label htmlFor="description">Description:</label>
           <textarea id="description" name="description" value={courseData.description} onChange={handleChange}></textarea>
         </div>
+
+        <div className="form-group">
+          <label>Categories:</label>
+          {courseCategories.map(category => (
+            <div key={category._id}>
+              <input
+              type="checkbox"
+              id={category._id}
+              name="category"
+              value={category._id}
+              checked={courseData.category.includes(category._id)}
+              onChange={handleCategoryChange}
+              />
+              <label htmlFor={category._id}>{category.name}</label>
+            </div>
+          ))}
+        </div>
+
         <div className="form-group">
           <label htmlFor="file">File:</label>
           <input type="file" id="file" onChange={handleFileChange} />

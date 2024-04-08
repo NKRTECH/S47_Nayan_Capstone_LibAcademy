@@ -6,6 +6,7 @@ const Course = require('../../models/courses/coursesModel');
 const getCoursesController = require("../../controllers/courses/getCoursesController");
 const uploadCourseController = require("../../controllers/courses/uploadCourseController");
 const { getCourseCategories } = require("../../controllers/courses/getCourseCategoryController");
+const getCoursesByCategoriesController = require("../../controllers/courses/getCoursesByCategoriesController");
 
 // Multer configuration for handling file uploads
 const storage = multer.diskStorage({
@@ -25,6 +26,10 @@ router.post('/create', upload.single('file'), uploadCourseController);
 
 // GET route for getting course categories
 router.get('/courseCategories', getCourseCategories);
+
+// Define a route for fetching courses by multiple categories
+router.get('/fetchCoursesByCategories', getCoursesByCategoriesController);
+
 
 
 

@@ -8,8 +8,8 @@ export const tutorRegisterThunk = createAsyncThunk(
     try {
       const response = await tutorRegistrationAPI(formData);
       // Assuming your backend returns some data upon successful registration
-      console.log('Registration successful!', response.data);
-      return response.data;
+      console.log('Registration successful!', response);
+      return response;
     } catch (error) {
       console.error('Error in registerTutor:', error.response.data);
       return thunkAPI.rejectWithValue(error.response.data);

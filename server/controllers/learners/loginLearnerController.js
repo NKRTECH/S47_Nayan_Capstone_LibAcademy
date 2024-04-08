@@ -22,7 +22,7 @@ const loginLearnerController = async (req, res) => {
 
         // Generate JWT token
         const token = jwt.sign(
-            { userId: learner._id, email: learner.email, role: 'learner' },
+            { learnerId: learner._id, email: learner.email, role: 'learner' },
             secret_key,
             // process.env.JWT_SECRET,
             { expiresIn: '1h' }

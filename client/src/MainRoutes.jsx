@@ -18,6 +18,7 @@ import Unauthorized from './Unauthorized';
 import Protected from './Protected';
 import LearnerProfilePage from './pages/learners/LearnerProfilePage';
 import TutorCoursePage from './pages/tutors/TutorCoursePage';
+import CreateLessons from './pages/tutors/CreateLessons';
 
 
 const MainRoutes = () => {
@@ -37,6 +38,7 @@ const MainRoutes = () => {
       <Route path="/tutor/profile" element={<LayoutTutor><Protected component={TutorProfilePage} allowedRoles={['tutor']} /></LayoutTutor>} />
       <Route path='/courses' element={<LayoutTutor><Protected component={TutorCoursePage} allowedRoles={['tutor']} /></LayoutTutor>} />
       <Route path="/courses/create" element={<LayoutTutor><Protected component={UploadCoursePage} allowedRoles={['tutor']} /></LayoutTutor>} />
+      <Route path='/courses/:courseId/createlesson' element={<LayoutTutor><Protected component={CreateLessons} allowedRoles={['tutor']} /></LayoutTutor>} />
 
       {/* Learner Routes */}
       <Route path="/learner/" element={<LayoutLearner><Protected component={LearnerHomepage} allowedRoles={['learner']} /></LayoutLearner>} />

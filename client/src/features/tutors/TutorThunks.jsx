@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { tutorLoginAPI, tutorRegistrationAPI } from './TutorsApi'; // You'll need to implement this API function to communicate with your backend
 
 // Async thunk action for registering a tutor
@@ -32,16 +32,3 @@ export const tutorLoginThunk = createAsyncThunk(
        }
     }
    );
-
-   export const tutorLogoutThunk = () => async (dispatch) => {
-    try {
-      // Clear tutor data and token from localStorage
-      localStorage.removeItem('tutorData');
-      localStorage.removeItem('token');
-      // Dispatch the logout action to reset the Redux state
-      dispatch(logout());
-    } catch (error) {
-      // Handle any errors
-      console.error('Error logging out:', error);
-    }
-  };

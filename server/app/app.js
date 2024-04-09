@@ -2,6 +2,7 @@ const express = require('express');
 const tutorsRoutes = require('../routes/tutors/tutorsRoute');
 const learnersRoutes = require('../routes/learners/learnersRoute');
 const coursesRoutes = require('../routes/courses/coursesRoute');
+const lessonsRoutes = require("../routes/lessons/lessonsRoute");
 const cors = require('cors');
 
 const app = express();
@@ -20,6 +21,9 @@ app.use('/api/learners', learnersRoutes);
 
 //*****************for courses***************** */
 app.use('/api/courses', coursesRoutes);
+
+//********************for lessons**************** */
+app.use('/api/lessons', lessonsRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3000;

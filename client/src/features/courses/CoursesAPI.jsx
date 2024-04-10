@@ -25,3 +25,20 @@ export const getCourseCategoriesAPI = async () => {
         throw error; // Re-throw the error if you want to handle it further up the call stack
     }
 }
+
+
+export const getCoursesByCategoriesAPI = async (categories) => {
+    console.log('Categories api: ', categories);
+    try {
+        const response = await axios.get(`${BASE_URL}/courses/fetchCoursesByCategories`, {
+            params: {
+                categories: categories.join(','),
+            },
+        });
+        console.log('Courses fetched successfully!', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching courses by categories:', error);
+        throw new Error('Network response was not ok');
+    }
+};

@@ -40,7 +40,7 @@ const LearnerProfilePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put('/api/learner/profile', editableData);
+      const response = await axios.put('http://localhost:3000/api/learner/profile', editableData);
       console.log('Profile updated:', response.data);
       // Optionally update local state or Redux store with updated data
       // Exit edit mode after successful update
@@ -59,6 +59,8 @@ const LearnerProfilePage = () => {
 
     // Redirect to the login page or perform any other necessary action
     navigate('/');
+    window.location.reload();
+
   };
 
   return (

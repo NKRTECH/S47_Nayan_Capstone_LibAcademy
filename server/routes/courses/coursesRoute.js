@@ -7,6 +7,9 @@ const getCoursesController = require("../../controllers/courses/getCoursesContro
 const uploadCourseController = require("../../controllers/courses/uploadCourseController");
 const { getCourseCategories } = require("../../controllers/courses/getCourseCategoryController");
 const getCoursesByCategoriesController = require("../../controllers/courses/getCoursesByCategoriesController");
+// Import the authentication middleware
+const { isAuthenticated, checkRole } = require('../../middleware/authMiddleware');
+const getCoursesByTutor = require("../../controllers/courses/getCoursesByTutor");
 
 // Multer configuration for handling file uploads
 const storage = multer.diskStorage({
@@ -21,17 +24,16 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// POST route for creating a new course
-router.post('/create', upload.single('file'), uploadCourseController);
+// POST route for creating a new course, accessible only by tutors
+router.post('/create', isAuthenticated, checkRole('tutor'), upload.single('file'), uploadCourseController);
 
 // GET route for getting course categories
 router.get('/courseCategories', getCourseCategories);
 
-// Define a route for fetching courses by multiple categories
+// GET route for fetching courses by multiple categories
 router.get('/fetchCoursesByCategories', getCoursesByCategoriesController);
 
-
-
-
+// GET route for fetching courses by tutor
+router.get('/fetchCoursesByTutor/:tutorId', getCoursesByTutor);
 
 module.exports = router

@@ -1,6 +1,21 @@
 import axios from "axios";
 
-const BASE_URL = 'http://localhost:3000/api'; // Replace this with your actual backend API URL
+const BASE_URL = 'http://localhost:3000/api';
+
+// Function to set the token as the default Authorization header
+export const setAuthToken = token => {
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+      delete axios.defaults.headers.common['Authorization'];
+    }
+  };
+  
+  // Call the setAuthToken function with the actual token
+  // You need to call this function whenever the token changes, for example after login
+  // Replace 'yourActualTokenHere' with the method to retrieve your actual token
+//   const token = localStorage.getItem("token");
+//   setAuthToken(token);
 
 
 export const createCourseAPI = async (courseData) => {

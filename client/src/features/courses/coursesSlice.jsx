@@ -1,9 +1,10 @@
 // courseSlice.js
 import { createSlice } from '@reduxjs/toolkit';
-import { createCourseThunk, fetchCoursesByCategories } from './CoursesThunks';
+import { createCourseThunk, fetchCoursesByCategories, fetchCoursesByTutor } from './CoursesThunks';
 
 const initialState = {
   courses: [],
+  tutorCourses: [],
   status: 'idle',
   loading: false,
   error: null
@@ -50,6 +51,13 @@ const courseSlice = createSlice({
       .addCase(fetchCoursesByCategories.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      //****************************fetch courses by tutor******** */
+      .addCase(fetchCoursesByTutor.fulfilled, (state, action) => {
+        state.tutorCourses = action.payload.courses;
+        console.log('action.payload:----', action.payload.courses);
+        // console.log(action.payload.courses[2].lessonIds);
+
       });
   }
 });

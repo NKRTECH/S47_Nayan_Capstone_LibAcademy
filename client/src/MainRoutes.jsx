@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 
 // Import your components for the routes
 import HomePageTutor from './pages/tutors/HomePageTutor';
@@ -20,13 +20,13 @@ import LearnerProfilePage from './pages/learners/LearnerProfilePage';
 import TutorCoursePage from './pages/tutors/TutorCoursePage';
 import CreateLessons from './pages/tutors/CreateLessons';
 import TutorCourseLessonsPage from './pages/tutors/TutorCourseLessonsPage';
+import LessonContentPage from './pages/tutors/TutorLessonContentPage';
 
 
 const MainRoutes = () => {
   return (
     <Routes>
       {/* User Routes */}
-
 
       <Route path="/" element={<LayoutUser><Protected component={NavUser} allowedRoles={['user']}/></LayoutUser>} />
       <Route path="/tutor/registration" element={<LayoutUser><Protected component={TutorRegistrationPage} allowedRoles={['user']}/></LayoutUser>} />
@@ -40,7 +40,10 @@ const MainRoutes = () => {
       <Route path='/courses' element={<LayoutTutor><Protected component={TutorCoursePage} allowedRoles={['tutor']} /></LayoutTutor>} />
       <Route path="/courses/create" element={<LayoutTutor><Protected component={UploadCoursePage} allowedRoles={['tutor']} /></LayoutTutor>} />
       <Route path='/courses/:courseId/createlesson' element={<LayoutTutor><Protected component={CreateLessons} allowedRoles={['tutor']} /></LayoutTutor>} />
-      <Route path="/courses/:courseId" element={<LayoutTutor><Protected component={TutorCourseLessonsPage} allowedRoles={['tutor']} /></LayoutTutor>} />
+      {/* <Route path="/courses/:courseId" element={<LayoutTutor><Protected component={TutorCourseLessonsPage} allowedRoles={['tutor']} /></LayoutTutor>} /> */}
+      <Route path='/courses/:courseId/lessons' element={<LayoutTutor><Protected component={TutorCourseLessonsPage} allowedRoles={['tutor']} /></LayoutTutor>} />
+      <Route path='/courses/:courseId/lessons/:lessonId' element={<LayoutTutor><Protected component={LessonContentPage} allowedRoles={['tutor']} /></LayoutTutor>} />
+
 
 
       {/* Learner Routes */}

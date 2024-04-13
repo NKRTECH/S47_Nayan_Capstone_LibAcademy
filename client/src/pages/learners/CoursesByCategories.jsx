@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCoursesByCategories } from '../../features/courses/CoursesThunks';
 import { resetCourses, resetStatus } from '../../features/courses/coursesSlice';
-import './CoursesByCategories.css'; // Import CSS file for styling
+import './CoursesByCategories.css';
 
 const CoursesByCategory = ({ categories }) => {
     console.log('Received Categories:', categories); // Debugging line

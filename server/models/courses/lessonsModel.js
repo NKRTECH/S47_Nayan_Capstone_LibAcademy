@@ -14,7 +14,7 @@ const lessonSchema = new mongoose.Schema({
     embedded: [String],
     structuredData: mongoose.Schema.Types.Mixed
   },
-  courseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Courses', required: true }
+  courseId:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Courses', required: true }]
 });
 
 // Define indexes

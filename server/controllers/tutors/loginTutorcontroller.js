@@ -23,7 +23,7 @@ const loginTutorController = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { userId: tutor._id, email: tutor.email, role: 'tutor', },
+            { tutorId: tutor._id, email: tutor.email, role: 'tutor', },
             secret_key,
             // process.env.JWT_SECRET,
             { expiresIn: '1h' }

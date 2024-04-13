@@ -1,13 +1,13 @@
-const Courses = require("../../models/courses/coursesModel");
+const mongoose = require('mongoose');
+const Courses = require('../../models/courses/coursesModel');
 
-// Controller to fetch courses from the database
-const getCourses = async (req, res) => {
-  try {
-    // Fetch courses from the database
-    const courses = await Courses.find();
-    res.json(courses); // Send courses as JSON response
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-module.exports = getCourses;
+// Example function to get a course by ID with categories populated
+async function getCourseWithCategories(courseId) {
+ try {
+    const course = await Courses.findById(courseId).populate('categories');
+    return course;
+ } catch (error) {
+    console.error(error);
+    throw error; // Or handle the error as needed
+ }
+}

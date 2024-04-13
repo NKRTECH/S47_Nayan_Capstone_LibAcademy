@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 const getDbConnection = require('../../config/database');
 
 const courseSchema = new mongoose.Schema({
-  category: { type: mongoose.Schema.Types.ObjectId, ref: 'CourseCategory', required: true },
+  categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'CourseCategory', required: true }],
   title: { type: String, required: true },
   description: { type: String, required: true },
-  fileUrl: { type: String },
   tutorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tutors' },
-  lessonIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Lessons' }]
+  lessonIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Lessons' }],
+  fileUrl: { type: String }
 }, {
   timestamps: true,
   optimisticConcurrency: true

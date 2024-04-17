@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { tutorLoginThunk, tutorRegisterThunk } from './TutorThunks';
+import { setTutorAuthToken } from './TutorsApi';
+
 
 const initialTutorDataString = localStorage.getItem('tutorData');
 const initialTutorData = initialTutorDataString ? JSON.parse(initialTutorDataString) : null;
@@ -23,6 +25,8 @@ const tutorSlice = createSlice({
       state.tutorData = null;
       // Dispatch the logout action to reset the Redux state
       state.isLoggedIn = false;
+      // Remove the Authorization header
+      setTutorAuthToken(null);
     },
   },
   extraReducers: (builder) => {

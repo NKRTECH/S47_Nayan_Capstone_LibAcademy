@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const getDbConnection = require('../../config/database');
 
 const lessonSchema = new mongoose.Schema({
+
   title: { type: String, required: true},
   content: {
     text: { type: String },
@@ -14,7 +15,12 @@ const lessonSchema = new mongoose.Schema({
     embedded: [String],
     structuredData: mongoose.Schema.Types.Mixed
   },
-  courseId:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Courses', required: true }]
+  courseId:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Courses', required: true }],
+  tutorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tutors', required: true },
+  priority: { type: Number, default: 0 } // New field for lesson priority
+}, {
+  timestamps: true,
+  optimisticConcurrency: true
 });
 
 // Define indexes

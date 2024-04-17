@@ -28,11 +28,17 @@ const uploadLessonVideo = multer({
 
 const createLesson = async (req, res) => {
   try {
-    const { title, content, alt, description, courseId } = req.body;
+    const { title, content, alt, description, courseId, tutorId, priority } = req.body;
+    console.log(req.body);
     const videoFile = req.file; // Access the uploaded file
 
     if (!videoFile) {
       return res.status(400).json({ message: 'No video file uploaded' });
+    }
+    //check if priority order already exists for that course
+    const checkPriority = await Lesson.findOne({ courseId, priority });
+    if (checkPriority) {
+      return res.status(400).json({ message: 'Priority order already exists for that course' });
     }
 
     // Create a new lesson
@@ -47,7 +53,9 @@ const createLesson = async (req, res) => {
           description // Use the description from the request body
         }]
       },
-      courseId // Associate the lesson with the provided courseId
+      courseId, // Associate the lesson with the provided courseId
+      tutorId,
+      priority
     });
 
     const savedLesson = await lesson.save();

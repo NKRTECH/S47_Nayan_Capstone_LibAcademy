@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { learnerLoginThunk, learnerRegisterThunk } from './LearnersThunks';
+import { setLearnerAuthToken } from './LearnersAPI';
 
 // Check if learner data exists in local storage
 const initialLearnerDataString = localStorage.getItem('learnerData');
@@ -24,6 +25,8 @@ const learnerSlice = createSlice({
       state.learnerData = null;
       // Dispatch the logout action to reset the Redux state
       state.isLoggedIn = false;
+      // Remove the Authorization header
+      setLearnerAuthToken(null);
     }
   },
   extraReducers: (builder) => {

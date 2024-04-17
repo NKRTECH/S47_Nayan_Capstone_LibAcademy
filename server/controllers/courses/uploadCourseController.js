@@ -4,10 +4,11 @@ const Course = require('../../models/courses/coursesModel'); // Course model
 const uploadCourseController = async (req, res) => {
  try {
     const { title, description, tutorId } = req.body;
-    console.log(req.body);
+   //  console.log(req.body);
     const fileUrl = req.file ? req.file.path : null; // Get the file path from Multer
+   //  const fileUrl = req.file ? req.file.path.replace(/\\/g, '/') : null;
     const categoryIds = req.body.category.split(','); // Assuming category is a comma-separated string of IDs
-    console.log(categoryIds);
+   //  console.log(categoryIds);
 
     const course = await Course.create({
       categories: categoryIds, // Use the IDs directly
@@ -16,6 +17,7 @@ const uploadCourseController = async (req, res) => {
       tutorId,
       fileUrl // Save the file URL in the database
     });
+    console.log('Course created:', course);
 
     res.status(201).json(course);
  } catch (error) {

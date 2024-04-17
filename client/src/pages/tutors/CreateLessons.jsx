@@ -10,10 +10,12 @@ const CreateLessons = () => {
   const [alt, setAlt] = useState('');
   const [description, setDescription] = useState('');
   const [courseId, setCourseId] = useState('');
+  const [priority, setPriority] = useState(0);
   const [videoFile, setVideoFile] = useState(null);
-
   const dispatch = useDispatch();
   const { isLoading, error } = useSelector((state) => state.lessons);
+
+  const tutorId = useSelector((state) => state.tutor.tutorData._id);
 
    // Use useParams to access the URL parameters
   const { courseId: urlCourseId } = useParams(); // Access courseId from the URL
@@ -25,7 +27,7 @@ const CreateLessons = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const lessonData = { title, content, alt, description, courseId, videoFile };
+    const lessonData = { title, content, alt, description, courseId, videoFile, priority };
     const formData = new FormData();
     // Append all fields to formData
     formData.append('title', lessonData.title);
@@ -34,6 +36,9 @@ const CreateLessons = () => {
     formData.append('description', lessonData.description);
     formData.append('courseId', lessonData.courseId);
     formData.append('videoFile', lessonData.videoFile);
+    formData.append('tutorId', tutorId);
+    // console.log(lessonData);
+    formData.append('priority', lessonData.priority);
     dispatch(createLessonThunk(formData));
   };
 
@@ -46,36 +51,50 @@ const CreateLessons = () => {
         placeholder="Title"
         required
       />
+      <br /> <br />
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Content"
         required
       />
+      <br /> <br />
       <input
         type="text"
         value={alt}
         onChange={(e) => setAlt(e.target.value)}
         placeholder="Alt text for video"
       />
+      <br /> <br />
       <textarea
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Video description"
       />
+      <br /> <br />
       <input
         type="text"
         value={courseId}
-        onChange={(e) => setCourseId(e.target.value)}
         placeholder="Course ID"
         required
+        readOnly={true}
       />
+      <br /> <br />
+      <label htmlFor="priority">Set lesson order </label>
+      <input 
+      type="number" 
+      value={priority} 
+      onChange={(e) => setPriority(e.target.value)} 
+      placeholder="Order of lesson" 
+      />
+      <br /> <br />
       <input
         type="file"
         onChange={(e) => setVideoFile(e.target.files[0])}
         accept="video/*"
         required
       />
+      <br /> <br />
       <button type="submit" disabled={isLoading}>
         {isLoading ? 'Creating...' : 'Create Lesson'}
       </button>

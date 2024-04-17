@@ -22,6 +22,7 @@ import CreateLessons from './pages/tutors/CreateLessons';
 import TutorCourseLessonsPage from './pages/tutors/TutorCourseLessonsPage';
 
 
+
 const MainRoutes = () => {
   return (
     <Routes>
@@ -41,7 +42,6 @@ const MainRoutes = () => {
       <Route path="/courses/create" element={<LayoutTutor><Protected component={UploadCoursePage} allowedRoles={['tutor']} /></LayoutTutor>} />
       <Route path='/courses/:courseId/createlesson' element={<LayoutTutor><Protected component={CreateLessons} allowedRoles={['tutor']} /></LayoutTutor>} />
       <Route path="/courses/:courseId" element={<LayoutTutor><Protected component={TutorCourseLessonsPage} allowedRoles={['tutor']} /></LayoutTutor>} />
-
 
       {/* Learner Routes */}
       <Route path="/learner/" element={<LayoutLearner><Protected component={LearnerHomepage} allowedRoles={['learner']} /></LayoutLearner>} />

@@ -57,7 +57,6 @@ const courseSlice = createSlice({
         state.tutorCourses = action.payload.courses;
         console.log('action.payload:----', action.payload.courses);
         // console.log(action.payload.courses[2].lessonIds);
-
       });
   }
 });

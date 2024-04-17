@@ -12,9 +12,9 @@ const CreateLessons = () => {
   const [courseId, setCourseId] = useState('');
   const [priority, setPriority] = useState(0);
   const [videoFile, setVideoFile] = useState(null);
-
   const dispatch = useDispatch();
   const { isLoading, error } = useSelector((state) => state.lessons);
+
   const tutorId = useSelector((state) => state.tutor.tutorData._id);
 
    // Use useParams to access the URL parameters

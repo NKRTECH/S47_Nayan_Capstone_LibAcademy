@@ -23,6 +23,7 @@ import LessonContentPage from './pages/tutors/TutorLessonContentPage';
 import EditLessonPage from './pages/tutors/EditLessonPage';
 
 
+
 const MainRoutes = () => {
   return (
     <Routes>
@@ -44,7 +45,6 @@ const MainRoutes = () => {
       <Route path='/tutor/courses/:courseId/lessons' element={<LayoutTutor><Protected component={TutorCourseLessonsPage} allowedRoles={['tutor']} /></LayoutTutor>} />
       <Route path='/tutor/courses/:courseId/lessons/:lessonId' element={<LayoutTutor><Protected component={LessonContentPage} allowedRoles={['tutor']} /></LayoutTutor>} />
       <Route path="/tutor/courses/:courseId/lessons/edit/:lessonId" element={<LayoutTutor><Protected component={EditLessonPage} allowedRoles={['tutor']} /></LayoutTutor>} />
-
 
 
       {/* Learner Routes */}

@@ -19,7 +19,7 @@ function TutorCoursePage() {
  }, [dispatch, tutorData]);
 
  const handleCourseClick = (courseId) => {
-    navigate(`/courses/${courseId}/lessons`); // Navigate to the lessons page for the course
+    navigate(`/tutor/courses/${courseId}/lessons`); // Navigate to the lessons page for the course
  };
 
  return (
@@ -31,7 +31,7 @@ function TutorCoursePage() {
           <p>{course.description}</p>
         </div>
       ))}
-      <button className="create-course-btn" onClick={() => navigate("/courses/create")}>Create Course</button>
+      <button className="create-course-btn" onClick={() => navigate("/tutor/courses/create")}>Create Course</button>
     </div>
  );
 }

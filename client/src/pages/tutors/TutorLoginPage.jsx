@@ -25,14 +25,23 @@ const TutorLoginPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(tutorLoginThunk(credentials));
+        dispatch(tutorLoginThunk(credentials))
+        .then((action)=>{
+         console.log('action:--', action);
+            if(action.type === 'tutor/login/fulfilled'){
+               console.log('Tutor logged in successfully:--', action.payload);
+                navigate('/tutor/');
+            }
+        }).catch((error) => {
+            console.error('Error logging in tutor:', error);
+        });
      };
 
-    useEffect(() => {
-        if (isLoggedIn) {
-          navigate('/tutor/');
-        }
-     }, [isLoggedIn, navigate]);
+   //  useEffect(() => {
+   //      if (isLoggedIn) {
+   //        navigate('/tutor/');
+   //      }
+   //   }, [isLoggedIn, navigate]);
 
     return (
        <div className="login-page">

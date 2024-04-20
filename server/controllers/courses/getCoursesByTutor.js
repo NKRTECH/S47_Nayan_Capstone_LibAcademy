@@ -17,7 +17,7 @@ const getCoursesByTutor = async (req, res) => {
         return res.status(404).json({ message: 'No courses found for this tutor' });
       }
 
-      console.log('Courses fetched successfully:', courses);
+      // console.log('Courses fetched successfully:', courses);
       res.status(200).json({ message: 'Courses fetched successfully', courses });
     } catch (error) {
       res.status(500).json({ message: 'Error fetching courses', error });

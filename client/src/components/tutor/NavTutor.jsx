@@ -17,8 +17,8 @@ const NavTutor = () => {
       <nav className="navigation">
         <ul>
           <li><Link to="/tutor/">Home</Link></li>
-          <li><Link to="/courses">Courses</Link></li>
-          <li><Link to="/about">About Us</Link></li>
+          <li><Link to="/tutor/courses">Courses</Link></li>
+          <li><Link to="tutor/about">About Us</Link></li>
           
           {/* Conditionally render the tutor's name if registration is successful */}
           {tutorData && (

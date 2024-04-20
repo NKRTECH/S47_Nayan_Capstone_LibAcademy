@@ -17,7 +17,7 @@ const uploadCourseController = async (req, res) => {
       tutorId,
       fileUrl // Save the file URL in the database
     });
-    console.log('Course created:', course);
+   //  console.log('Course created:', course);
 
     res.status(201).json(course);
  } catch (error) {

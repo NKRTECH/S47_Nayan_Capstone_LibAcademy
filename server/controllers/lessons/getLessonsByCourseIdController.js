@@ -4,8 +4,9 @@ const Lessons = require("../../models/lessons/lessonsModel");
 const getLessonsByCourseIdController = async (req, res) => {
     try {
         const courseId = req.params.courseId;
-        // console.log(courseId);
+        console.log('courseid:--',courseId);
         const lessons = await Lessons.find({ courseId: courseId }).populate('courseId').exec();
+        // console.log(lessons);
         if (!lessons || lessons.length === 0) {
             return res.status(404).json({ message: 'No lessons found for this course' });
         }

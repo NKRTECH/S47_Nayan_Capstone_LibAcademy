@@ -28,14 +28,19 @@ const uploadLessonVideo = multer({
 
 const createLesson = async (req, res) => {
   try {
-    const { title, content, alt, description, courseId, tutorId, priority } = req.body;
-    console.log(req.body);
+    const { title, content, courseId, tutorId, priority } = req.body;
     const videoFile = req.file; // Access the uploaded file
 
     if (!videoFile) {
       return res.status(400).json({ message: 'No video file uploaded' });
     }
-    //check if priority order already exists for that course
+
+    // Parse the content JSON string to get the text, alt, and description
+    const parsedContent = JSON.parse(content);
+    const { text, media } = parsedContent;
+    const { alt, description } = media.length > 0 ? media[0] : {};
+
+    // Check if priority order already exists for that course
     const checkPriority = await Lesson.findOne({ courseId, priority });
     if (checkPriority) {
       return res.status(400).json({ message: 'Priority order already exists for that course' });
@@ -45,12 +50,12 @@ const createLesson = async (req, res) => {
     const lesson = new Lesson({
       title,
       content: {
-        ...content,
+        text,
         media: [{
           type: 'video',
           url: videoFile.path, // Store the path to the uploaded file
-          alt, // Use the alt text from the request body
-          description // Use the description from the request body
+          alt, // Use the alt text from the parsed content
+          description // Use the description from the parsed content
         }]
       },
       courseId, // Associate the lesson with the provided courseId
@@ -59,6 +64,7 @@ const createLesson = async (req, res) => {
     });
 
     const savedLesson = await lesson.save();
+
 
     // Find the course by its ID and update it by adding the new lesson ID
     const course = await Courses.findById(courseId);
@@ -85,60 +91,3 @@ module.exports = {
   uploadLessonVideo,
   createLesson
 };
-
-
-//****************************************** */
-
-// const Lesson = require('../../models/lessons/lessonsModel');
-// const multer = require('multer');
-
-// const storage = multer.diskStorage({
-//   destination: function(req, file, cb) {
-//     cb(null, 'uploads/');
-//   },
-//   filename: function(req, file, cb) {
-//     cb(null, Date.now() + '-' + file.originalname);
-//   }
-// });
-
-// const upload = multer({
-//   storage: storage,
-// //   limits: { fileSize: 1024 * 1024 * 5 }, // Limit file size to 5MB
-//   fileFilter: function(req, file, cb) {
-//     const filetypes = /mp4|avi|mov/;
-//     const mimetype = filetypes.test(file.mimetype);
-//     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-
-//     if (mimetype && extname) {
-//       return cb(null, true);
-//     }
-//     cb("Error: File upload only supports the following filetypes - " + filetypes);
-//   }
-// });
-
-// exports.createLesson = async (req, res) => {
-//     try {
-//        const { title, content, alt, description, courseId } = req.body;
-//        const videoFile = req.file; // Access the uploaded file
-   
-//        // Create a new lesson
-//        const lesson = new Lesson({
-//          title,
-//          content: {
-//            ...content,
-//            media: [{
-//              type: 'video',
-//              url: videoFile.path, // Store the path to the uploaded file
-//              alt, // Use the alt text from the request body
-//              description // Use the description from the request body
-//            }]
-//          },
-//          courseId: [courseId] // Associate the lesson with the provided courseId
-//        });
-   
-//        await lesson.save();
-//        res.status(201).json({ message: 'Lesson created successfully', lesson });
-//     } catch (error) {
-//        res.status(500).json({ message: 'Error creating lesson', error });
-//     }
-//    };

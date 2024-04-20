@@ -14,7 +14,7 @@ const getCoursesByCategoriesController = async (req, res) => {
     const courses = await Course.find({
       categories: { $all: categoryIds}
     }).populate('categories').populate('tutorId');
-    console.log(courses);
+   //  console.log(courses);
 
     // Send the courses back in the response
     res.status(200).json({courses});

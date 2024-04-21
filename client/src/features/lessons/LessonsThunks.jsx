@@ -22,7 +22,7 @@ export const createLessonThunk = createAsyncThunk(
     async (courseId, { rejectWithValue }) => {
       try {
         const response = await axios.get(`${BASE_URL}/lessons/fetchLessonsByCourseId/${courseId}`);
-        console.log('Lessons fetched successfully:--', response.data);
+        console.log('Lessons fetched successfully by courseId:--', response.data);
         return response.data;
       } catch (error) {
         return rejectWithValue(error.response.data);
@@ -35,7 +35,23 @@ export const fetchLessonById = createAsyncThunk(
   async (lessonId, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${BASE_URL}/lessons/fetchLessonById/${lessonId}`);
-      console.log('Lesson fetched successfully:--', response.data);
+      console.log('Lesson fetched successfully by lessonId:--', response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const updateLessonThunk = createAsyncThunk(
+  'lessons/updateLesson',
+  async ({ lessonId, formData }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/lessons/update/${lessonId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

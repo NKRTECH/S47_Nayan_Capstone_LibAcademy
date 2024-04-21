@@ -3,10 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createCourseThunk } from '../../features/courses/CoursesThunks';
 import './UploadCoursePage.css'; // Import CSS file for styling
 import { getCourseCategoriesAPI } from '../../features/courses/CoursesAPI';
+import { useNavigate } from 'react-router-dom';
 
 const UploadCoursePage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const tutorId = useSelector((state) => state.tutor.tutorData._id);
+  const isUploaded = useSelector((state) => state.courses.isUploaded);
+  console.log(isUploaded);
   
   const [courseData, setCourseData] = useState({
     category: [],
@@ -73,8 +77,22 @@ const UploadCoursePage = () => {
     // console.log(createCourseThunk)
 
     // Dispatch action to update Redux store with the newly created course
-    dispatch(createCourseThunk(formData));
+    dispatch(createCourseThunk(formData))
+    .then((action)=>{
+        console.log('action:--', action);
+        if(action.type === 'courses/create/fulfilled'){
+           console.log('Course created successfully:--', action.payload);
+            navigate('/tutor/courses');
+        }
+    }).catch((error) => {
+        console.error('Error creating course:', error);
+    });
   };
+  useEffect(()=>{
+    if(isUploaded){
+      navigate('/tutor/courses');
+    }
+  },[isUploaded, navigate])
 
   return (
     <div className="upload-course-container">

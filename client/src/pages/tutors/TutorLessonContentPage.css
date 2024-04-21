@@ -1,0 +1,46 @@
+/* TutorLessonContentPage.css */
+
+.lesson-content-container {
+    max-width: 800px; /* Set a maximum width for content */
+    margin: 0 auto; /* Center content horizontally */
+    padding: 20px; /* Add padding around content */
+    background-color: #ffffff; /* White background */
+    border-radius: 10px; /* Add rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+  }
+  
+  .lesson-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333333; /* Dark text color */
+    margin-bottom: 20px;
+  }
+  
+  .lesson-text {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #666666; /* Dark gray text color */
+    margin-bottom: 30px;
+  }
+  
+  .lesson-video-container {
+    margin-bottom: 30px;
+  }
+  
+  .lesson-video-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px; /* Add rounded corners to video wrapper */
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .lesson-video {
+    width: 100%;
+  }
+  
+  .lesson-video-description {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666666; /* Dark gray text color */
+  }
+  

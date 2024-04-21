@@ -2,30 +2,28 @@ const mongoose = require('mongoose');
 const getDbConnection = require('../../config/database');
 
 const lessonSchema = new mongoose.Schema({
-
-  title: { type: String, required: true},
+  title: { type: String, required: true },
   content: {
-    text: { type: String },
+    text: { type: String, required: true },
     media: [{
-      type: { type: String },
-      url: { type: String },
-      alt: { type: String },
-      description: { type: String }
+      type: { type: String, enum: ['video', 'image', 'audio'], required: true },
+      url: { type: String, required: true },
+      alt: { type: String, required: true },
+      description: { type: String, required: true }
     }],
     embedded: [String],
     structuredData: mongoose.Schema.Types.Mixed
   },
-  courseId:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Courses', required: true }],
-  tutorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tutors', required: true },
-  priority: { type: Number, default: 0 } // New field for lesson priority
+  courseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Courses', required: true },
+  tutorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tutor', required: true },
+  priority: { type: Number, default: 0 }
 }, {
   timestamps: true,
   optimisticConcurrency: true
 });
 
 // Define indexes
-lessonSchema.index({ title: 1 }); // Create an index on the 'title' field
-lessonSchema.index({ courseId: 1 }); // Create an index on the 'courseId' field
+lessonSchema.index({ title: 1, courseId: 1 }, { unique: true }); // Composite unique index
 
 const dbConnection = getDbConnection;
 const Lesson = dbConnection.model('Lessons', lessonSchema, 'lessons');

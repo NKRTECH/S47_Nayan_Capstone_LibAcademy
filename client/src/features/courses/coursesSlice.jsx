@@ -7,7 +7,8 @@ const initialState = {
   tutorCourses: [],
   status: 'idle',
   loading: false,
-  error: null
+  error: null,
+  isUploaded: false
 };
 
 const courseSlice = createSlice({
@@ -32,6 +33,7 @@ const courseSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.courses.push(action.payload);
+        state.isUploaded = true;
       })
       .addCase(createCourseThunk.rejected, (state, action) => {
         state.loading = false;

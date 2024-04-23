@@ -21,17 +21,6 @@ const updateLessonController = async (req, res) => {
       return res.status(404).json({ message: 'Lesson not found' });
     }
 
-    // If a new video file is uploaded and an old file exists, delete the old file
-    if (videoFile && existingLesson.content.media[0]?.url) {
-    const oldVideoPath = existingLesson.content.media[0].url;
-    console.log('oldVideoPath:--',oldVideoPath);
-    fs.unlink(path.join(__dirname, '..', '..', oldVideoPath), (err) => {
-      if (err) {
-        console.error('Error deleting old video file:', err);
-      }
-    });
-  }
-
     // Check if the new priority value conflicts with an existing lesson's priority
     if (priorityNumber !== existingLesson.priority) {
       const existingPriorityLesson = await Lesson.findOne({
@@ -60,7 +49,19 @@ const updateLessonController = async (req, res) => {
       priority // Update the priority
     };
 
+    // Update the lesson in the database
     const updatedLesson = await Lesson.findByIdAndUpdate(lessonId, updatedData, { new: true });
+
+    // If a new video file is uploaded and an old file exists, delete the old file
+    if (videoFile && existingLesson.content.media[0]?.url) {
+      const oldVideoPath = existingLesson.content.media[0].url;
+      const fullPath = path.join(__dirname, '..', '..', oldVideoPath);
+      fs.unlink(fullPath, (err) => {
+        if (err) {
+          console.error('Error deleting old video file:', err);
+        }
+      });
+    }
     res.json(updatedLesson);
   } catch (error) {
     // console.error(error);

@@ -23,11 +23,15 @@ const deleteLessonController = async (req, res) => {
     // Delete video file from server
     const videoFilePath = lesson.content.media[0]?.url;
     if (videoFilePath) {
-      fs.unlink(path.join(__dirname, '..', '..', videoFilePath), (err) => {
-        if (err) {
-          console.error('Error deleting video file:', err);
-        }
-      });
+      const fullPath = path.join(__dirname, '..', '..', videoFilePath);
+      // Check if the file exists before attempting to delete
+      if (fs.existsSync(fullPath)) {
+        fs.unlink(fullPath, (err) => {
+          if (err) {
+            console.error('Error deleting video file:', err);
+          }
+        });
+      }
     }
 
     // Delete lesson from database

@@ -1,0 +1,132 @@
+/* CourseCard.module.css */
+
+.courseCard {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 300px; /* Fixed width */
+  height: 420px; /* Fixed height */
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensures footer is at the bottom */
+}
+
+.courseImageContainer {
+  height: auto; /* Let the image determine the height */
+}
+
+.courseImage {
+  width: 100%;
+  height: auto; /* Let the image maintain its aspect ratio */
+  object-fit: cover;
+  display: block; /* Ensure the image doesn't have extra space below */
+}
+
+.courseDetails {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensures footer is at the bottom */
+  flex: 1; /* Allows this section to grow and fill available space */
+}
+
+.courseTitle {
+  margin-top: 0; /* Remove top margin to bring the title closer to the image */
+  margin-bottom: 10px;
+  font-size: 14px; /* Adjust font size */
+  font-weight: bold;
+}
+
+.courseDescriptionContainer {
+  /* Remove position relative; no longer needed for absolute positioning */
+  margin-bottom: 20px; /* Add margin to create space for the 'Read Less' button */
+}
+
+.courseDescription {
+  max-height: 80px; /* Maximum height for the description */
+  overflow: hidden;
+  margin-top: 0;
+  margin-bottom: 0; /* Remove margin-bottom to allow for padding in the container */
+  font-size: 14px; /* Adjust font size */
+  line-height: 1.4;
+  position: relative;
+  transition: max-height 0.3s ease; /* Smooth transition for max-height */
+  display: inline; /* Display description inline */
+  margin-right: 5px; /* Space between description and button */
+}
+
+.expanded {
+  max-height: 500px; /* Arbitrary large max-height when expanded */
+}
+
+.readMoreButton {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+  display: inline; /* Display button inline with the description */
+  margin: 0;
+  padding-left: 5px; /* Space between description and button */
+}
+
+.readLessButton {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 14px;
+  align-self: flex-end; /* Align the button to the right */
+  margin-top: -5px; /* Adjust margin to align with the description bottom */
+  display: block; /* Display 'Read Less' button on a new line */
+  margin-top: 10px; /* Space above the 'Read Less' button */
+}
+
+.courseTutor {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 13px;
+  color: #666666;
+}
+
+.courseFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px; /* Adjust padding as needed */
+  background-color: #f8f9fa; /* Light gray background for the footer */
+  height: 60px; /* Fixed height for the footer */
+}
+
+.priceAndEnrollment {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the start of the flex container */
+}
+
+.coursePrice {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px; /* Add space between price and enrollment count */
+}
+
+.enrollButton {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px; /* Reduce padding for a more compact button */
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.enrollmentCount {
+  font-size: 14px;
+  color: #666666;
+}

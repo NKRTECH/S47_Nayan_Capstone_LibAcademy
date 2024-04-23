@@ -1,12 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCoursesByCategories } from '../../features/courses/CoursesThunks';
-import { resetCourses, resetStatus } from '../../features/courses/coursesSlice';
-import './CoursesByCategories.css';
+import { resetCourses } from '../../features/courses/coursesSlice';
+import styles from './CoursesByCategories.module.css'; // Import as a module
+import CourseCard from '../../components/course/CourseCard';
 
 const CoursesByCategory = ({ categories }) => {
-    console.log('Received Categories:', categories); // Debugging line
-
     const dispatch = useDispatch();
     const courses = useSelector((state) => state.courses.courses);
     const status = useSelector((state) => state.courses.status);
@@ -17,26 +16,23 @@ const CoursesByCategory = ({ categories }) => {
     };
 
     return (
-        <div className="courses-container">
-            <button className="search-button" onClick={handleSearch}>Search</button>
+        <div className={styles.coursesContainer}>
+            <button className={styles.searchButton} onClick={handleSearch}>Search</button>
             {status === 'loading' && <div>Loading...</div>}
             {status === 'succeeded' && courses.length === 0 && <div>No courses found</div>}
-            {status === 'succeeded' && <button className="reset-button" onClick={() => dispatch(resetCourses())}>Reset</button>}
             {status === 'succeeded' && (
-                <div className="courses-list">
+                <div className={styles.coursesList}>
                     {courses.map((course) => (
-                        <div key={course._id} className="course-card">
-                            <h2>{course.title}</h2>
-                            <p>{course.description}</p>
-                            <p>{`By ${course?.tutorId?.firstName} ${course?.tutorId?.lastName}`}</p>
+                        <div key={course._id} className={styles.courseCardWrapper}>
+                            <CourseCard course={course} />
                         </div>
                     ))}
                 </div>
             )}
             {status === 'failed' && (
                 <div>
-                    <div className="error-message">{error}</div>
-                    <button className="retry-button" onClick={handleSearch}>Retry</button>
+                    <div className={styles.errorMessage}>{error}</div>
+                    <button className={styles.retryButton} onClick={handleSearch}>Retry</button>
                 </div>
             )}
         </div>
@@ -44,63 +40,3 @@ const CoursesByCategory = ({ categories }) => {
 };
 
 export default CoursesByCategory;
-
-
-//*************************************************** */
-
-// import React from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { fetchCoursesByCategories } from '../../features/courses/CoursesThunks';
-// import { resetStatus } from '../../features/courses/coursesSlice';
-
-// const CoursesByCategory = ({ categories }) => {
-//     console.log('Received Categories:', categories); // Debugging line
-
-//     const dispatch = useDispatch();
-//     const courses = useSelector((state) => state.courses.courses);
-//     const status = useSelector((state) => state.courses.status);
-//     const error = useSelector((state) => state.courses.error);
-
-//     const handleSearch = () => {
-//         // Dispatch an action to reset the status to 'idle'
-//         // dispatch(resetStatus());
-//         // Dispatch the fetch action again with the selected categories
-//         dispatch(fetchCoursesByCategories(categories));
-//         console.log('fecthed courses by categories:--',courses);
-//     };
-
-//     if (status === 'loading') {
-//         return <div>Loading...</div>;
-//     } else if (status === 'succeeded') {
-//         return (
-//             <>
-//             <button onClick={handleSearch}>Search</button>
-//             <div>
-//                 {courses.map((course) => (
-//                     <div key={course._id}>
-//                         <h2>{course.title}</h2>
-//                         <h3>{course.description}</h3>
-//                     </div>
-//                 ))}
-//             </div>
-//             </>
-//         );
-//     } else if (status === 'failed') {
-//         return (
-//             <div>
-//                 <div>{error}</div>
-//                 <button onClick={handleSearch}>Retry</button>
-//             </div>
-//         );
-//     }
-
-//     // Always display the Search button
-//     return (
-//         <div>
-//             <button onClick={handleSearch}>Search</button>
-//         </div>
-//     );
-// };
-
-// export default CoursesByCategory;
-

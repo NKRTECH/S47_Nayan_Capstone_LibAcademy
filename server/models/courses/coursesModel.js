@@ -13,7 +13,7 @@ const courseSchema = new mongoose.Schema({
   // New fields for popularity, reviews, and stars
   popularity: { type: Number, default: 0 }, // A numeric value representing the course's popularity
   reviews: [{ // An array of review objects
-     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' }, // The user who wrote the review
+     learnerIds: { type: mongoose.Schema.Types.ObjectId, ref: 'Learners' }, // The user who wrote the review
      rating: { type: Number, min: 1, max: 5 }, // The rating given by the user (1-5 stars)
      comment: { type: String }, // The review comment
      createdAt: { type: Date, default: Date.now } // The date the review was created

@@ -17,8 +17,11 @@ const UploadCoursePage = () => {
     title: '',
     description: '',
     tutorId: tutorId,
-    file: null // For storing the uploaded file
-  });
+    file: null, // For storing the uploaded file
+    price: '', // Course price
+    duration: '', // Estimated time to complete the course
+    startDate: '' // Start date of the course, if applicable
+ });
 
   const [courseCategories, setCourseCategories] = useState([]);
   
@@ -72,6 +75,9 @@ const UploadCoursePage = () => {
     formData.append('description', courseData.description);
     formData.append('tutorId', courseData.tutorId);
     formData.append('file', courseData.file);
+    formData.append('price', courseData.price); // Course price
+    formData.append('duration', courseData.duration); // Estimated time to complete the course
+    formData.append('startDate', courseData.startDate); // Start date of the course, if applicable
     // console.log('typeof: ',typeof formData)
     // console.log('formData: ', formData)
     // console.log(createCourseThunk)
@@ -123,11 +129,25 @@ const UploadCoursePage = () => {
             </div>
           ))}
         </div>
-
         <div className="form-group">
           <label htmlFor="file">File:</label>
           <input type="file" id="file" onChange={handleFileChange} />
         </div>
+
+        {/* New fields for price, duration, and start date */}
+        <div className="form-group">
+          <label htmlFor="price">Price:</label>
+          <input type="number" id="price" name="price" value={courseData.price} onChange={handleChange} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="duration">Duration:</label>
+          <input type="text" id="duration" name="duration" value={courseData.duration} onChange={handleChange} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="startDate">Start Date:</label>
+          <input type="date" id="startDate" name="startDate" value={courseData.startDate} onChange={handleChange} />
+        </div>
+
         <button type="submit" className="submit-btn">Upload Course</button>
       </form>
     </div>

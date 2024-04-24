@@ -1,0 +1,53 @@
+/* CoursesByCategories.module.css */
+.coursesContainer {
+    padding: 20px;
+}
+
+.searchButton {
+    margin-bottom: 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.searchButton:hover {
+    background-color: #0056b3;
+}
+
+.coursesList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Align the cards to the start (left side) of the container */
+    /* gap: 15px; */
+}
+
+.courseCardWrapper {
+    /* flex: 1; Each card will grow to fill the space */
+    min-width: 280px; /* Minimum width for each card */
+    max-width: calc(33.33% - 30px); /* Maximum width for each card, accounting for the 15px margin on each side */
+    margin: 15px; /* Fixed margin of 15px around each card */
+}
+
+.errorMessage {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.retryButton {
+    margin-top: 10px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.retryButton:hover {
+    background-color: #c82333;
+}

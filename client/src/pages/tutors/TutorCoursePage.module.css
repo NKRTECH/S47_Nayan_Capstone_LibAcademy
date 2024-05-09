@@ -1,0 +1,36 @@
+/* TutorCoursePage.module.css */
+
+.createCourseBtn {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+ 
+.courseCardWrapper {
+  padding: 15px;
+}
+ 
+.courseCardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px; /* Add space between cards */
+}
+ 
+@media (max-width: 768px) {
+  .courseCardContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+ 
+  .courseCardWrapper {
+    width: 90%; /* Full width on smaller screens */
+    padding: 15px; /* Consistent padding */
+  }
+}

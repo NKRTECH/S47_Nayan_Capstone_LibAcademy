@@ -10,8 +10,6 @@
   width: 300px; /* Fixed width */
   height: 420px; /* Fixed height */
   max-width: 100%;
-  display: flex;
-  flex-direction: column;
   justify-content: space-between; /* Ensures footer is at the bottom */
 }
 
@@ -129,4 +127,22 @@
 .enrollmentCount {
   font-size: 14px;
   color: #666666;
+}
+
+/****************tutor card****************/
+
+.courseStatistics {
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.lessonCount,
+.enrollmentCount,
+.averageRating {
+  font-size: 14px;
+  color: #666666;
+  margin: 5px 0;
 }

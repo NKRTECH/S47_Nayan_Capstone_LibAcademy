@@ -50,4 +50,42 @@ const registerLearnerController = async (req, res) => {
     }
 };
 
-module.exports = registerLearnerController;
+const registerLearnerWithGoogleOAuth = async (req, res) => {
+    try {
+        const { credential } = req.body;
+
+        // Verify the ID token (this is a simplified example; you should use a library like google-auth-library)
+        const decodedToken = jwt.decode(credential);
+        console.log('Decoded token:--', decodedToken);
+        const { email, given_name, family_name } = decodedToken;
+
+        // Check if the user already exists
+        const existingLearner = await Learner.findOne({ email });
+        if (existingLearner) {
+            return res.status(400).json({ message: 'Email is already registered' });
+        }
+
+        // Create a new learner document
+        const newLearner = await Learner.create({
+            email: email,
+            firstName: given_name,
+            lastName: family_name,
+        });
+
+        // Generate JWT token with role claim
+        const token = jwt.sign(
+            { learnerId: newLearner._id, email: newLearner.email, role: 'learner' },
+            secret_key,
+            { expiresIn: '1h' }
+        );
+
+        // Return the JWT token
+        res.json({learner: newLearner ,token });
+    } catch (error) {
+        // Handle errors
+        console.error('Error registering learner with Google OAuth:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+module.exports = { registerLearnerController, registerLearnerWithGoogleOAuth };

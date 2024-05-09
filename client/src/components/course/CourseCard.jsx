@@ -24,9 +24,10 @@ const CourseCard = ({ course }) => {
     setShowModal(false); // Hide the modal when "Close" is clicked
   };
 
-  const truncatedDescription = description.length > 100 && !showModal
-    ? description.substring(0, 100) + '...'
-    : description;
+    // Always show the truncated description in the CourseCard
+    const truncatedDescription = description.length > 100
+        ? `${description.substring(0, 100)}...`
+        : description;
 
   return (
     <div className={styles.courseCard}>
@@ -40,9 +41,9 @@ const CourseCard = ({ course }) => {
         <div className={styles.courseDescriptionContainer}>
           <p className={styles.courseDescription}>
             {truncatedDescription}
-            {!showModal && description.length > 100 && (
+            {description.length > 100 && (
               <button className={styles.readMoreButton} onClick={handleReadMore}>
-                Read More
+                  Read More
               </button>
             )}
           </p>

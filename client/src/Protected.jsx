@@ -1,7 +1,6 @@
-
-import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { useEffect } from 'react';
 
 function Protected(props) {
   const { component: Component, allowedRoles } = props;
@@ -11,6 +10,7 @@ function Protected(props) {
   const role = decodedToken ? decodedToken.role : 'user';
   
   useEffect(() => {
+    console.log('Checking token and role...');
     if (!token) {
       return  navigate("/");
     } 

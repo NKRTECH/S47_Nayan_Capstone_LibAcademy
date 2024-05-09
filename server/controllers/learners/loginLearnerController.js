@@ -34,10 +34,7 @@ const loginLearnerController = async (req, res) => {
             secure: process.env.NODE_ENV === 'production', // Secure cookie in production
             sameSite: 'strict', // Prevent CSRF attacks
             maxAge: 3600000, // 1 hour expiration time
-            // other cookie options if needed
         });
-
-        // let {...password, ...learnerDataWithoutPassword } = learner.toObject();
 
         // Send success response
         res.status(200).json({ token, learner:learner.toObject()});
@@ -48,4 +45,41 @@ const loginLearnerController = async (req, res) => {
     }
 };
 
-module.exports = loginLearnerController;
+const loginLearnerWithGoogleOAuth = async (req, res) => {
+    try {
+        const { credential } = req.body;
+
+        // Verify the ID token (this is a simplified example; you should use a library like google-auth-library)
+        const decodedToken = jwt.decode(credential);
+        const { email } = decodedToken;
+
+        // Check if the learner exists in the database
+        const learner = await Learners.findOne({ email });
+        if (!learner) {
+            return res.status(404).json({ message: 'Learner not found' });
+        }
+
+        // Generate JWT token
+        const token = jwt.sign(
+            { learnerId: learner._id, email: learner.email, role: 'learner' },
+            secret_key,
+            { expiresIn: '1h' }
+        );
+
+        // Set JWT as an HTTP-only cookie
+        res.cookie('jwt', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 3600000,
+        });
+
+        // Send success response
+        res.status(200).json({ token, learner: learner.toObject() });
+    } catch (error) {
+        console.error('Error logging in learner with Google OAuth:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+module.exports = { loginLearnerController, loginLearnerWithGoogleOAuth };

@@ -42,4 +42,41 @@ const registerTutorController = async (req, res) => {
     }
 };
 
-module.exports = registerTutorController;
+const registerTutorWithGoogleOAuth = async (req, res) => {
+    try {
+      const { credential } = req.body;
+  
+      // Verify the ID token (this is a simplified example; you should use a library like google-auth-library)
+      const decodedToken = jwt.decode(credential);
+      console.log('Decoded token:--', decodedToken);
+      const { email, given_name, family_name } = decodedToken;
+  
+      // Check if the tutor already exists
+      const existingTutor = await Tutors.findOne({ email });
+      if (existingTutor) {
+        return res.status(400).json({ message: 'Email is already registered' });
+      }
+  
+      // Create a new tutor document
+      const newTutor = await Tutors.create({
+        email: email,
+        firstName: given_name,
+        lastName: family_name,
+      });
+  
+      // Generate JWT token with role claim
+      const token = jwt.sign(
+        { tutorId: newTutor._id, email: newTutor.email, role: 'tutor' },
+        secret_key,
+        { expiresIn: '1h' }
+      );
+  
+      // Return the JWT token
+      res.json({tutor: newTutor, token});
+    } catch (error) {
+      console.error('Error registering tutor with Google OAuth:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+  
+  module.exports = { registerTutorController, registerTutorWithGoogleOAuth };

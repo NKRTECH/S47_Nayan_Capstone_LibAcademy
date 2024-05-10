@@ -39,6 +39,7 @@ export const fetchCoursesByTutor = createAsyncThunk(
   async (tutorId, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${BASE_URL}/courses/fetchCoursesByTutor/${tutorId}`);
+      console.log('response:--',response)
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

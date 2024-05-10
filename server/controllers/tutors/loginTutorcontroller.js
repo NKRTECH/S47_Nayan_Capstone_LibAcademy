@@ -37,4 +37,34 @@ const loginTutorController = async (req, res) => {
     }
 };
 
-module.exports = loginTutorController;
+const loginTutorWithGoogleOAuth = async (req, res) => {
+    try {
+      const { credential } = req.body;
+  
+      // Verify the ID token (this is a simplified example; you should use a library like google-auth-library)
+      const decodedToken = jwt.decode(credential);
+      console.log('Decoded token:--', decodedToken);
+      const { email } = decodedToken;
+  
+      // Check if the tutor exists
+      const tutor = await Tutors.findOne({ email });
+      if (!tutor) {
+        return res.status(404).json({ message: 'Tutor not found' });
+      }
+  
+      // Generate JWT token with role claim
+      const token = jwt.sign(
+        { tutorId: tutor._id, email: tutor.email, role: 'tutor' },
+        secret_key,
+        { expiresIn: '1h' }
+      );
+  
+      // Return the JWT token
+      res.json({tutor: tutor.toObject(), token});
+    } catch (error) {
+      console.error('Error logging in tutor with Google OAuth:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+  
+  module.exports = { loginTutorController, loginTutorWithGoogleOAuth };

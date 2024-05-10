@@ -4,6 +4,7 @@ const Courses = require("../../models/courses/coursesModel");
 const getCoursesByTutor = async (req, res) => {
     try {
       const tutorId = req.params.tutorId;
+      console.log('Tutor ID:', tutorId);
   
       const courses = await Courses.find({ tutorId: tutorId })
       .populate({
@@ -14,6 +15,7 @@ const getCoursesByTutor = async (req, res) => {
       .populate('tutorId').exec();
   
       if (!courses || courses.length === 0) {
+        console.log('No courses found for this tutor');
         return res.status(404).json({ message: 'No courses found for this tutor' });
       }
 

@@ -3,6 +3,12 @@ import './TutorLoginPage.css'; // Adjust the import path as necessary
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { tutorLoginThunk } from '../../features/tutors/TutorThunks';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
+
+const BASE_URL = 'http://localhost:3000/api';
+const googleClientId = '963011057711-md4pthsv1vv72dport7bp2pgg11rlj8t.apps.googleusercontent.com';
+
 
 const TutorLoginPage = () => {
 
@@ -37,11 +43,23 @@ const TutorLoginPage = () => {
         });
      };
 
-   //  useEffect(() => {
-   //      if (isLoggedIn) {
-   //        navigate('/tutor/');
-   //      }
-   //   }, [isLoggedIn, navigate]);
+     const handleGoogleSuccess = async (response) => {
+      const { credential } = response;
+      try {
+        const result = await axios.post(`${BASE_URL}/tutors/login/google`, { credential });
+        localStorage.setItem('token', result.data.token);
+        localStorage.setItem('tutorData', JSON.stringify(result.data.tutor));
+        navigate('/tutor/');
+        window.location.reload();
+      } catch (error) {
+        console.error('Error logging in with Google OAuth:', error);
+        alert(error.response.data.message);
+      }
+    };
+  
+    const handleGoogleError = (error) => {
+      console.error('Google Sign-In error:', error);
+    };
 
     return (
        <div className="login-page">
@@ -65,6 +83,11 @@ const TutorLoginPage = () => {
             />
             <button type="submit">Login</button>
          </form>
+         <div className="google-signin">
+           <GoogleOAuthProvider clientId={googleClientId}>
+             <GoogleLogin onSuccess={handleGoogleSuccess} onFailure={handleGoogleError} scope="profile email" />
+           </GoogleOAuthProvider>
+         </div>
        </div>
     );
 };

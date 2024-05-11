@@ -1,0 +1,73 @@
+.learner-homepage {
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  height: 100vh;
+}
+
+.content {
+  text-align: left;
+}
+
+.welcome-heading {
+  position: absolute; /* Position the heading absolutely */
+  top: 60px; /* Adjust top position as needed */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Center horizontally */
+}
+
+.filter-button {
+  /* position: absolute;  */
+  /* top: 130px; 
+  left: 5.5%;  */
+  margin-top: 120px;
+  margin-bottom: 20px;
+  /* transform: translateX(-50%); Center horizontally */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.filtering-panel {
+  position: fixed;
+  top: 70px;
+  left: 35%;
+  right: 0;
+  transform: translateX(-50%); /*Center horizontally */
+  width: 300px;
+  height: 100%;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.filter-criterion {
+  margin-bottom: 20px;
+}
+
+.filter-criterion-button {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.filter-criterion-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.close-filter-button {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 20px;
+}

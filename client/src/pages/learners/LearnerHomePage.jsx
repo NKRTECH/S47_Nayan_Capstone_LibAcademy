@@ -60,9 +60,10 @@ const LearnerHomepage = () => {
   const toggleCriterion = (criterionId) => {
     setFilteringCriteria(prevCriteria => prevCriteria.map(criterion => {
       if (criterion.id === criterionId) {
-        return {...criterion, isOpen:!criterion.isOpen };
+        return {...criterion, isOpen: !criterion.isOpen };
+      } else {
+        return {...criterion, isOpen: false };
       }
-      return criterion;
     }));
   };
 
@@ -125,105 +126,3 @@ const LearnerHomepage = () => {
 };
 
 export default LearnerHomepage;
-
-
-// import { useState, useEffect } from 'react';
-// import { getCourseCategoriesAPI } from '../../features/courses/CoursesAPI';
-// import CoursesByCategory from './CoursesByCategories';
-// import styles from './LearnerHomePage.module.css'; // Import the CSS module
-
-// const LearnerHomepage = () => {
-//   const [categories, setCategories] = useState([]);
-//   const [selectedCategories, setSelectedCategories] = useState([]);
-//   const [isFilteringOpen, setIsFilteringOpen] = useState(false);
-//   const [filteringCriteria, setFilteringCriteria] = useState([
-//     { id: 'categories', name: 'Categories', isOpen: false },
-//     // Add more criteria here
-//   ]);
-
-//   useEffect(() => {
-//     fetchCategories();
-//   }, []);
-
-//   const fetchCategories = async () => {
-//     try {
-//       const categories = await getCourseCategoriesAPI();
-//       setCategories(categories);
-//     } catch (error) {
-//       console.error('Error fetching categories:', error);
-//     }
-//   };
-
-//   const handleCategoryChange = (event) => {
-//     const { id, checked } = event.target;
-//     setSelectedCategories(prevSelectedCategories => {
-//       if (checked) {
-//         return [...prevSelectedCategories, id];
-//       } else {
-//         return prevSelectedCategories.filter(categoryId => categoryId!== id);
-//       }
-//     });
-//   };
-
-//   const toggleFiltering = () => {
-//     setIsFilteringOpen(!isFilteringOpen);
-//   };
-
-//   const toggleCriterion = (criterionId) => {
-//     setFilteringCriteria(prevCriteria => prevCriteria.map(criterion => {
-//       if (criterion.id === criterionId) {
-//         return {...criterion, isOpen:!criterion.isOpen };
-//       }
-//       return criterion;
-//     }));
-//   };
-
-//   return (
-//     <div className={styles['learner-homepage']}>
-//     <div className={styles['content']}>
-//       <h1 className={styles['welcome-heading']}>Welcome to LibAcademy, Learner!</h1>
-
-//       {/* Filtering Button */}
-//       <button onClick={toggleFiltering} className={styles['filter-button']}>Filter courses</button>
-
-//       {/* Filtering Panel */}
-//       {isFilteringOpen && (
-//         <div className={styles['filtering-panel']}>
-//           <h2>Filter by</h2>
-//           {filteringCriteria.map(criterion => (
-//             <div key={criterion.id} className={styles['filter-criterion']}>
-//               <button onClick={() => toggleCriterion(criterion.id)} className={styles['filter-criterion-button']}>
-//                 {criterion.name}
-//               </button>
-//               {criterion.isOpen && (
-//                 <div className={styles['filter-criterion-options']}>
-//                   {/* Example: Categories */}
-//                   {criterion.id === 'categories' && categories.map(category => (
-//                     <div key={category._id}>
-//                       <input
-//                         type="checkbox"
-//                         id={category._id}
-//                         name={category._id}
-//                         checked={selectedCategories.includes(category._id)}
-//                         onChange={handleCategoryChange}
-//                       />
-//                       <label htmlFor={category._id}>{category.name}</label>
-//                     </div>
-//                   ))}
-//                   {/* Add more options here */}
-//                 </div>
-//               )}
-//             </div>
-//           ))}
-//           <button onClick={toggleFiltering} className={styles['close-filter-button']}>Close</button>
-//         </div>
-//       )}
-
-//       {/* Pass selected categories to CoursesByCategory */}
-//       <CoursesByCategory categories={selectedCategories} />
-//     </div>
-//   </div>
-//   );
-// };
-
-// export default LearnerHomepage;

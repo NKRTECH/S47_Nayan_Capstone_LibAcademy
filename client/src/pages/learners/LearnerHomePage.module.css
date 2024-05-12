@@ -1,7 +1,4 @@
 .learner-homepage {
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
   height: 100vh;
 }
 
@@ -29,45 +26,213 @@
   padding: 10px 20px;
   cursor: pointer;
 }
-
 .filtering-panel {
   position: fixed;
-  top: 70px;
+  top: 70px; /* Adjust top position to accommodate fixed navbar */
   left: 35%;
-  right: 0;
-  transform: translateX(-50%); /*Center horizontally */
+  transform: translateX(-50%);
   width: 300px;
-  height: 100%;
+  max-height: calc(100vh - 100px); /* Adjust max height to fit viewport */
+  overflow-y: auto; /* Enable scrolling if needed */
   background-color: white;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  overflow-y: auto;
-  z-index: 1;
+  z-index: 1; /* Ensure it's above the content */
 }
 
 .filter-criterion {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .filter-criterion-button {
-  background-color: #f8f9fa;
+  background: linear-gradient(45deg, #f8f9fa, #e9edf1);
   color: #6c757d;
-  border: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
   padding: 10px 20px;
   cursor: pointer;
   margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.filter-criterion-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.filter-criterion-button:hover {
+  background: linear-gradient(45deg, #d9e2ea, #c2c9d6);
+  color: #000000;
+  font-weight: 600;
+  border: 1px solid #90a7f1;
+}
+
+.filter-criterion-button:hover::before {
+  opacity: 1;
+}
+
+.filter-criterion-button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: #ffffff;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.filter-criterion-button:hover::after {
+  width: 200px;
+  height: 200px;
+  opacity: 0.5;
+}
+
+.filter-criterion-button::before, .filter-criterion-button::after {
+  z-index: -1;
 }
 
 .filter-criterion-options {
-  display: flex;
-  flex-direction: column;
+  max-height: 200px; /* Adjust the max-height according to your needs */
+  overflow-y: auto; /* Enable scrolling when content overflows */
+  border: 1px solid #90a7f1;
+  border-radius: 6px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.filter-criterion-options:hover {
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
 
 .close-filter-button {
-  background-color: #f8f9fa;
-  color: #6c757d;
+  background-color: #eb1a1ad4;
+  color: rgb(255, 255, 255);
   border: none;
+  border-radius: 5px;
   padding: 10px 20px;
   cursor: pointer;
   margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.close-filter-button:hover {
+  background-color: #c71a1a;
+  box-shadow: 0 0 10px rgba(203,26,26,0.5);
+}
+
+
+/* Style the category filter options */
+.filter-criterion-options {
+  list-style: none; /* Remove default list styles */
+  padding: 0; /* Remove padding */
+}
+
+/* Style the checkbox wrapper */
+.checkbox-wrapper {
+  position: relative; /* Position relative for absolute positioning of checkbox */
+  margin-right: 16px; /* Add right margin */
+}
+
+/* Style the custom checkbox */
+.custom-checkbox {
+  appearance: none; /* Remove default appearance */
+  width: 20px; /* Set width */
+  height: 20px; /* Set height */
+  border: 2px solid #007bff; /* Add border */
+  border-radius: 50%; /* Make it round */
+  cursor: pointer; /* Change cursor on hover */
+  transition: all 0.3s ease; /* Add transition */
+  position: relative; /* Position relative for checkmark positioning */
+  z-index: 1;
+}
+
+
+/* Style the custom checkbox when checked */
+.custom-checkbox:checked {
+  background-color: #007bff; /* Change background color when checked */
+  border-color: #007bff; /* Change border color when checked */
+}
+
+/* Style the checkmark */
+.checkmark {
+  position: absolute; /* Position absolute */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Center the checkmark */
+  width: 10px; /* Set width */
+  height: 10px; /* Set height */
+  opacity: 0; /* Hide initially */
+  transition: opacity 0.3s ease; /* Add transition */
+}
+
+/* Show the checkmark when checkbox is checked */
+.custom-checkbox:checked::after {
+  opacity: 1; /* Show checkmark */
+}
+
+
+/**********************/
+
+/* Modify the structure of the category options */
+.category-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f9fa; /* Light gray background */
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  margin: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-option:hover {
+  background-color: #e9ecef; /* Light blue background on hover */
+  transform: translateX(2px); /* Add a slight translation on hover */
+}
+
+/* Add a futuristic gradient background */
+.category-option::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #f8d7da, #c3b4cc); /* Gradient colors */
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.category-option:hover::before {
+  opacity: 0.8; /* Adjust opacity on hover */
+}
+
+/* Style the category label */
+.category-label {
+  margin-left: 10px;
+  color: #495057; /* Dark gray text color */
+  transition: color 0.3s ease;
+}
+
+.category-label:hover {
+  color: #007bff;
+  cursor: pointer;
 }

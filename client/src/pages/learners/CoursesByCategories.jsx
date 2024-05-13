@@ -4,12 +4,15 @@ import { fetchCoursesByCategories } from '../../features/courses/CoursesThunks';
 import { resetCourses } from '../../features/courses/coursesSlice';
 import styles from './CoursesByCategories.module.css'; // Import as a module
 import CourseCard from '../../components/course/CourseCard';
+import { useNavigate } from 'react-router-dom';
 
 const CoursesByCategory = ({ categories }) => {
     const dispatch = useDispatch();
     const courses = useSelector((state) => state.courses.courses);
     const status = useSelector((state) => state.courses.status);
     const error = useSelector((state) => state.courses.error);
+    const navigate = useNavigate();
+
 
     const handleSearch = () => {
         dispatch(fetchCoursesByCategories(categories));
@@ -22,8 +25,9 @@ const CoursesByCategory = ({ categories }) => {
             {status === 'succeeded' && courses.length === 0 && <div>No courses found</div>}
             {status === 'succeeded' && (
                 <div className={styles.coursesList}>
+                    {/* Modify the CourseCard component usage */}
                     {courses.map((course) => (
-                        <div key={course._id} className={styles.courseCardWrapper}>
+                        <div key={course._id} className={styles.courseCardWrapper} onClick={() => navigate(`/learner/courses/${course._id}`)}>
                             <CourseCard course={course} />
                         </div>
                     ))}

@@ -20,6 +20,7 @@ import CreateLessons from './pages/tutors/CreateLessons';
 import TutorCourseLessonsPage from './pages/tutors/TutorCourseLessonsPage';
 import LessonContentPage from './pages/tutors/TutorLessonContentPage';
 import EditLessonPage from './pages/tutors/EditLessonPage';
+import LearnerCoursePage from './pages/learners/LearnerCoursePage';
 
 
 
@@ -49,6 +50,7 @@ const MainRoutes = () => {
       {/* Learner Routes */}
       <Route path="/learner/" element={<LayoutLearner><Protected component={LearnerHomepage} allowedRoles={['learner']} /></LayoutLearner>} />
       <Route path="/learner/profile" element={<LayoutLearner><Protected component={LearnerProfilePage} allowedRoles={['learner']} /></LayoutLearner>} />
+      <Route path='/learner/courses/:courseId' element={<LayoutLearner><Protected component={LearnerCoursePage} allowedRoles={['learner']} /></LayoutLearner>} />
       
       {/* Unauthorized Route */}
       <Route path="/unauthorized" element={<Unauthorized  />} />

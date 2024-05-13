@@ -15,7 +15,7 @@ const lessonSchema = new mongoose.Schema({
     structuredData: mongoose.Schema.Types.Mixed
   },
   courseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Courses', required: true },
-  tutorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tutor', required: true },
+  tutorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tutors', required: true },
   priority: { type: Number, default: 0 }
 }, {
   timestamps: true,

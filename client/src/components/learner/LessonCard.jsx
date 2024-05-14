@@ -1,9 +1,7 @@
 import styles from './LessonCard.module.css'; // Import CSS module
 import { FaLock } from 'react-icons/fa'; // Import a lock icon from react-icons
 
-const LessonCard = ({ lesson, currentLearnerId, enrolledLearners }) => {
-  const isEnrolled = enrolledLearners.some(learner => learner._id === currentLearnerId);
-
+const LessonCard = ({ lesson, isEnrolled }) => {
   const handleLessonClick = () => {
     if (!isEnrolled) {
       alert('You need to enroll in this course to access the lesson.');

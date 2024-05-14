@@ -7,7 +7,7 @@ const updateLessonController = require('../../controllers/lessons/updateLessonCo
 const deleteLessonController = require('../../controllers/lessons/deleteLessonController');
 
 router.post('/create', uploadLessonVideo, createLesson);
-router.get('/fetchLessonsByCourseId/:courseId', getLessonsByCourseIdController);
+router.post('/fetchLessonsByCourseId/:courseId', getLessonsByCourseIdController);
 router.get('/fetchLessonById/:lessonId', getLessonContentByIdController);
 router.put('/update/:lessonId', uploadLessonVideo, updateLessonController);
 router.delete('/delete/:lessonId', deleteLessonController);

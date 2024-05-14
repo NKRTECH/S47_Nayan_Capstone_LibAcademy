@@ -27,8 +27,8 @@ const courseSchema = new mongoose.Schema({
   startDate: { type: Date }, // Start date of the course, if applicable
   // Note: Progress is typically calculated on the client side based on user interactions
   }, {
- timestamps: true,
- optimisticConcurrency: true
+   timestamps: true,
+   optimisticConcurrency: true
 });
 
 // Define indexes

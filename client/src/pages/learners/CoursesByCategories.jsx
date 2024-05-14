@@ -27,7 +27,7 @@ const CoursesByCategory = ({ categories }) => {
                 <div className={styles.coursesList}>
                     {/* Modify the CourseCard component usage */}
                     {courses.map((course) => (
-                        <div key={course._id} className={styles.courseCardWrapper} onClick={() => navigate(`/learner/courses/${course._id}`)}>
+                        <div key={course._id} className={styles.courseCardWrapper} onClick={() => navigate(`/learner/courses/${course._id}`, { state: { course } })}>
                             <CourseCard course={course} />
                         </div>
                     ))}

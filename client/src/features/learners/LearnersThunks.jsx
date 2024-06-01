@@ -1,5 +1,5 @@
 import {  createAsyncThunk } from '@reduxjs/toolkit';
-import {  learnerLoginAPI, learnerRegistrationAPI } from './LearnersAPI';
+import {  fetchCoursesByLearnerIdAPI, learnerLoginAPI, learnerRegistrationAPI } from './LearnersAPI';
 
 // Async thunk action for registering a tutor
 export const learnerRegisterThunk = createAsyncThunk(
@@ -32,6 +32,20 @@ export const learnerLoginThunk = createAsyncThunk(
       return response;
     } catch (error) {
       console.error('Error in loginLearner:', error.response.data);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+)
+
+export const fetchCoursesByLearnerIdThunk = createAsyncThunk(
+  'learner/fetchCoursesByLearnerId',
+  async (learnerId, thunkAPI) => {
+    try {
+      const response = await fetchCoursesByLearnerIdAPI(learnerId);
+      console.log('Courses by learner fetched successfully thunk:', response);
+      return response;
+    } catch (error) {
+      console.error('Error fetching courses:', error.response.data);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }

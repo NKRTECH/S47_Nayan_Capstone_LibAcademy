@@ -63,7 +63,11 @@ const registerTutorWithGoogleOAuth = async (req, res) => {
         firstName: given_name,
         lastName: family_name,
       });
-  
+
+      newTutor.toObject();
+      // Remove the password field before sending the response
+      delete newTutor.password;
+      
       // Generate JWT token with role claim
       const token = jwt.sign(
         { tutorId: newTutor._id, email: newTutor.email, role: 'tutor' },

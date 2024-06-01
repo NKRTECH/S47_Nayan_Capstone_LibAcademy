@@ -3,7 +3,11 @@ const tutorsRoutes = require('../routes/tutors/tutorsRoute');
 const learnersRoutes = require('../routes/learners/learnersRoute');
 const coursesRoutes = require('../routes/courses/coursesRoute');
 const lessonsRoutes = require("../routes/lessons/lessonsRoute");
+const paymentsRoutes = require("../routes/payments/paymentsRoute");
 const cors = require('cors');
+const dotenv = require("dotenv");
+dotenv.config();
+
 
 const app = express();
 
@@ -19,6 +23,7 @@ app.use('/api/tutors', tutorsRoutes);
 
 //*****************for learners***************** */
 app.use('/api/learners', learnersRoutes);
+app.use('/api/payments', paymentsRoutes);
 
 //*****************for courses***************** */
 app.use('/api/courses', coursesRoutes);

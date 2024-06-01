@@ -17,8 +17,9 @@ const learnerSchema = new mongoose.Schema({
     },
     password: {
         type: String
-    }
-}, {
+    },
+    enrolledCoursesIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Courses' }],}
+    , {
     timestamps: true
 });
 

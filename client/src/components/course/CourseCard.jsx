@@ -4,15 +4,22 @@ import PropTypes from 'prop-types';
 import styles from './CourseCard.module.css'; // Import as a module
 import DescriptionModal from './DescriptionModal';
 import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const CourseCard = ({ course }) => {
     const { title, description, tutorId, fileUrl, price, enrollmentCount, lessonIds, averageRating } = course;
+    const {enrolledCourses} = useSelector((state) => state.learner)
+    // console.log(typeof price)
+    console.log('enrolledCourses:====== ', enrolledCourses);
     const BASE_URL = "http://localhost:3000/";
   const [showModal, setShowModal] = useState(false); // State to manage modal visibility
   const token = localStorage.getItem("token");
   const decodedToken = token ? jwtDecode(token) : '';
+  console.log(decodedToken);
   const role = decodedToken?.role
-
+  const navigate = useNavigate();
 
   const handleReadMore = (event) => {
     event.stopPropagation(); // This will prevent the event from propagating to parent elements
@@ -23,6 +30,55 @@ const CourseCard = ({ course }) => {
     event.stopPropagation(); // This will prevent the event from propagating to parent elements
     setShowModal(false); // Hide the modal when "Close" is clicked
   };
+
+  const handleEnrollNow = async (event) => {
+    event.preventDefault();
+    event.stopPropagation(); // Prevent the event from propagating to parent elements
+    try {
+      // Send a request to your server to create an order
+      const response = await axios.post(`${BASE_URL}api/payments/create-order`, {
+        amount: Number(price * 100), // Convert the price to paise
+        learnerId: decodedToken.learnerId, // Assuming the learner's ID is in the decoded token
+        courseId: course._id, // Assuming the course ID is in the course object
+        currency: "INR", // Currency
+        paymentMethod: "phonepe", // Specify PhonePe as the payment method
+        status: "pending", // Initial status
+      });
+
+      console.log("Order created successfully:", response.data);
+
+      // Redirect the user to the PhonePe payment page
+      // The URL should be the one returned by your server after creating the order
+      const paymentPageUrl = response.data.paymentPageUrl; // This should be replaced with the actual URL structure you receive
+      if(paymentPageUrl) {
+        window.location.href = paymentPageUrl;
+      }
+    } catch (error) {
+      console.error("Error creating order:", error);
+      alert("Failed to create order. Please try again.");
+    }
+  };
+
+  const enrollButton = () => {
+    // Check if any course object in enrolledCourses has an id matching course._id
+    const isEnrolled = enrolledCourses.some(
+      (enrolledCourse) => enrolledCourse._id === course._id
+    );
+    console.log('isEnrolled: ', isEnrolled);
+
+    if (isEnrolled) {
+      return <button className={styles.enrolledButton}>Enrolled</button>;
+    } else {
+      return (
+        <button className={styles.enrollButton} onClick={handleEnrollNow}>
+          Enroll Now
+        </button>
+      );
+    }
+  };
+
+
+
 
     // Always show the truncated description in the CourseCard
     const truncatedDescription = description.length > 100
@@ -63,7 +119,7 @@ const CourseCard = ({ course }) => {
             <p className={styles.coursePrice}>Price: ${price}</p>
             <p className={styles.enrollmentCount}>{enrollmentCount} enrolled</p>
           </div>
-          <button className={styles.enrollButton}>Enroll Now</button>
+          {enrollButton()}
         </div>
       )}
       {showModal && (

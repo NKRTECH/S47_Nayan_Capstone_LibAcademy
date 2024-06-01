@@ -8,8 +8,8 @@ const loginLearnerController = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Check if the learner exists in the database
-        const learner = await Learners.findOne({ email });
+        // Check if the learner exists in the database and convert to plain object
+        const learner = await Learners.findOne({ email }).lean();
         if (!learner) {
             return res.status(404).json({ message: 'Learner not found' });
         }
@@ -19,6 +19,9 @@ const loginLearnerController = async (req, res) => {
         if (!passwordMatch) {
             return res.status(401).json({ message: 'Invalid password' });
         }
+
+        // Remove the password field before sending the response
+        delete learner.password;
 
         // Generate JWT token
         const token = jwt.sign(
@@ -37,7 +40,7 @@ const loginLearnerController = async (req, res) => {
         });
 
         // Send success response
-        res.status(200).json({ token, learner:learner.toObject()});
+        res.status(200).json({ token, learner:learner});
     } catch (error) {
         // Handle errors
         console.error('Error logging in learner:', error);

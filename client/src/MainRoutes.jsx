@@ -21,6 +21,9 @@ import TutorCourseLessonsPage from './pages/tutors/TutorCourseLessonsPage';
 import LessonContentPage from './pages/tutors/TutorLessonContentPage';
 import EditLessonPage from './pages/tutors/EditLessonPage';
 import LearnerCoursePage from './pages/learners/LearnerCoursePage';
+import PaymentRedirect from './pages/learners/PaymentRedirect';
+import PaymentSuccess from './pages/learners/PaymentSuccess';
+import LearnerMyCoursesPage from './pages/learners/LearnerMyCoursesPage';
 
 
 const MainRoutes = () => {
@@ -51,6 +54,10 @@ const MainRoutes = () => {
       <Route path="/learner/" element={<LayoutLearner><Protected component={LearnerHomepage} allowedRoles={['learner']} /></LayoutLearner>} />
       <Route path="/learner/profile" element={<LayoutLearner><Protected component={LearnerProfilePage} allowedRoles={['learner']} /></LayoutLearner>} />
       <Route path='/learner/courses/:courseId' element={<LayoutLearner><Protected component={LearnerCoursePage} allowedRoles={['learner']} /></LayoutLearner>} />
+      <Route path='/learner/my-courses' element={<LayoutLearner><Protected component={LearnerMyCoursesPage} allowedRoles={['learner']} /></LayoutLearner>} />
+      <Route path="/payment-redirect" element={<LayoutLearner><Protected component={PaymentRedirect} allowedRoles={['learner']} /></LayoutLearner>} />
+      <Route path='/payment-success' element={<LayoutLearner><Protected component={PaymentSuccess} allowedRoles={['learner']} /></LayoutLearner>} />
+
       
       {/* Unauthorized Route */}
       <Route path="/unauthorized" element={<Unauthorized  />} />

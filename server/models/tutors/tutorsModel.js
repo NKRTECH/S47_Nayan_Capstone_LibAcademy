@@ -17,8 +17,10 @@ const tutorSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-    }
-}, {
+    },
+    courseId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Courses' }],
+    },
+    {
     timestamps: true
 });
 

@@ -10,6 +10,7 @@ const getCoursesByCategoriesController = require("../../controllers/courses/getC
 // Import the authentication middleware
 const { isAuthenticated, checkRole } = require('../../middleware/authMiddleware');
 const getCoursesByTutor = require("../../controllers/courses/getCoursesByTutor");
+const getCoursesByLearnerController = require("../../controllers/courses/getCoursesByLearnerController");
 
 // Multer configuration for handling file uploads
 const storage = multer.diskStorage({
@@ -35,5 +36,8 @@ router.get('/fetchCoursesByCategories', getCoursesByCategoriesController);
 
 // GET route for fetching courses by tutor
 router.get('/fetchCoursesByTutor/:tutorId', getCoursesByTutor);
+
+// GET route for fetching courses in which a learner is enrolled
+router.get('/fetchCoursesByLearnerId/:learnerId', getCoursesByLearnerController);
 
 module.exports = router

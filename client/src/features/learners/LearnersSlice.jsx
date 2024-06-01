@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { learnerLoginThunk, learnerRegisterThunk } from './LearnersThunks';
+import { fetchCoursesByLearnerIdThunk, learnerLoginThunk, learnerRegisterThunk } from './LearnersThunks';
 import { setLearnerAuthToken } from './LearnersAPI';
 
 // Check if learner data exists in local storage
@@ -9,6 +9,7 @@ const initialLearnerData = initialLearnerDataString ? JSON.parse(initialLearnerD
 const initialState = {
   status: 'idle',
   learnerData: initialLearnerData,
+  enrolledCourses: [],
   loading: false,
   error: null,
   isLoggedIn: !!initialLearnerData, // Set isLoggedIn based on existence of learnerData
@@ -64,6 +65,19 @@ const learnerSlice = createSlice({
       })
       .addCase(learnerLoginThunk.rejected, (state, action) => {
         state.status = 'failed';
+        state.error = action.payload ? action.payload.message : 'Something went wrong';
+      })
+      //**********************fetchCoursesByLearnerId **************** */
+      .addCase(fetchCoursesByLearnerIdThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchCoursesByLearnerIdThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.enrolledCourses = action.payload.enrolledCourses;
+        console.log('Courses by learner fetched successfully payload:', action.payload);
+      })
+      .addCase(fetchCoursesByLearnerIdThunk.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload ? action.payload.message : 'Something went wrong';
       })
     }

@@ -1,8 +1,10 @@
 // config/database.js
 const mongoose = require('mongoose');
+const dotenv = require("dotenv");
+dotenv.config();
 
 const getDbConnection = () => {
-    const uri = `mongodb+srv://libacademy:libacademy@cluster0.tatdwkr.mongodb.net/LibAcademy?retryWrites=true&w=majority&appName=Cluster0`;
+    const uri = `${process.env.MONGODB_URI}`;
     const connection = mongoose.createConnection(uri);
 
     // Listen for the 'connected' event to confirm the connection was successful

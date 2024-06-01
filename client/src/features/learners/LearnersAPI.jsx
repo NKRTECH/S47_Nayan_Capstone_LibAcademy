@@ -43,35 +43,15 @@ const learnerLoginAPI = async (formData) => {
   }
 };
 
-export { learnerRegistrationAPI, learnerLoginAPI, setLearnerAuthToken };
+const fetchCoursesByLearnerIdAPI = async (learnerId) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/courses/fetchCoursesByLearnerId/${learnerId}`);
+    console.log('fetchCoursesByLearnerIdAPI:--', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error in fetchCoursesByLearnerIdAPI:', error);
+    throw error; // Re-throw the error if you want to handle it further up the call stack
+  }
+};
 
-
-//*************************************************** */
-
-// import axios from 'axios';
-
-// const BASE_URL = 'http://localhost:3000/api'; // Replace this with your actual backend API URL
-
-// const learnerRegistrationAPI = async (formData) => {
-//  try {
-//     const response = await axios.post(`${BASE_URL}/learners/register`, formData);
-//     console.log('learnerRegistrationAPI:--',response);
-//     return response.data;
-//  } catch (error) {
-//     console.error('Error in tutorRegistrationAPI:', error);
-//     throw error; // Re-throw the error if you want to handle it further up the call stack
-//  }
-// };
-
-// const learnerLoginAPI = async (formData) => {
-//  try {
-//     const response = await axios.post(`${BASE_URL}/learners/login`, formData);
-//     console.log('learnerLoginAPI:--',response);
-//     return response.data;
-//  } catch (error) {
-//     console.error('Error in learnerLoginAPI:', error);
-//     throw error; // Re-throw the error if you want to handle it further up the call stack
-//  }
-// };
-
-// export { learnerRegistrationAPI, learnerLoginAPI };
+export { learnerRegistrationAPI, learnerLoginAPI, setLearnerAuthToken, fetchCoursesByLearnerIdAPI };

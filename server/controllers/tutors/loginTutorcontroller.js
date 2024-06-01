@@ -11,7 +11,7 @@ const loginTutorController = async (req, res) => {
         const email = username
 
         // Check if the tutor exists in the database
-        const tutor = await Tutors.findOne({ email });
+        const tutor = await Tutors.findOne({ email }).lean();
         if (!tutor) {
             return res.status(404).json({ message: 'Tutor not found, here it is problem' });
         }
@@ -22,6 +22,9 @@ const loginTutorController = async (req, res) => {
             return res.status(401).json({ message: 'Invalid password' });
         }
 
+        // Remove the password field before sending the response
+        delete tutor.password;
+
         const token = jwt.sign(
             { tutorId: tutor._id, email: tutor.email, role: 'tutor', },
             secret_key,
@@ -29,7 +32,7 @@ const loginTutorController = async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.status(200).json({tutor:tutor.toObject(),token});
+        res.status(200).json({tutor:tutor,token});
     } catch (error) {
         // Handle errors
         console.error('Error logging in tutor:', error);

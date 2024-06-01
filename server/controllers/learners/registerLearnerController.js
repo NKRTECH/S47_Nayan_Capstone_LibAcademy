@@ -22,8 +22,12 @@ const registerLearnerController = async (req, res) => {
             ...req.body,
             password: hashedPassword
         });
-        const { password, ...learnerDataWithoutPassword } = newLearner.toObject();
 
+        newLearner.toObject();
+
+        // Remove the password field before sending the response
+        delete newLearner.password;
+        
         // Generate JWT token
         const token = jwt.sign(
             { learnerId: newLearner._id, email: newLearner.email, role: 'learner' },
@@ -42,7 +46,7 @@ const registerLearnerController = async (req, res) => {
         });
 
         // Return success response with JWT token
-        res.status(201).json({ learner: learnerDataWithoutPassword, token });
+        res.status(201).json({ learner: newLearner, token });
     } catch (error) {
         // Handle errors
         console.error('Error registering learner:', error);

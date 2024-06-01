@@ -2,11 +2,16 @@ import { useState, useEffect, useRef } from 'react';
 import { getCourseCategoriesAPI } from '../../features/courses/CoursesAPI';
 import CoursesByCategory from './CoursesByCategories';
 import styles from './LearnerHomePage.module.css'; // Import the CSS module
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCoursesByLearnerIdThunk } from '../../features/learners/LearnersThunks';
 
 const LearnerHomepage = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [isFilteringOpen, setIsFilteringOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { learnerData, enrolledCourses } = useSelector((state) => state.learner);
+  const learnerId = learnerData._id;
   const [filteringCriteria, setFilteringCriteria] = useState([
     { id: 'categories', name: 'Categories', isOpen: false },
     {id: 'popular', name: 'Popular', isOpen: false },
@@ -31,6 +36,11 @@ const LearnerHomepage = () => {
       document.removeEventListener('click', handleClickOutside);
     };
   }, []);
+  useEffect(() => {
+    if (Array.isArray(enrolledCourses) && enrolledCourses.length === 0) {
+      dispatch(fetchCoursesByLearnerIdThunk(learnerId));
+    }
+  }, [dispatch, enrolledCourses, learnerId]);
 
   const fetchCategories = async () => {
     try {
@@ -40,6 +50,8 @@ const LearnerHomepage = () => {
       console.error('Error fetching categories:', error);
     }
   };
+
+  
 
   const handleCategoryChange = (event) => {
     const { id, checked } = event.target;

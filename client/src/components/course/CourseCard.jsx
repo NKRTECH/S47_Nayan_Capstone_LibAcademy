@@ -8,9 +8,9 @@ import {
   Button,
   Box,
   Grid,
-  Rating,
   Modal,
 } from "@mui/material";
+import { Rating } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
@@ -34,7 +34,6 @@ const CourseCard = ({ course }) => {
   const token = localStorage.getItem("token");
   const decodedToken = token ? jwtDecode(token) : "";
   const role = decodedToken?.role;
-  const navigate = useNavigate();
 
   const handleReadMore = (event) => {
     event.stopPropagation();
@@ -161,25 +160,23 @@ const CourseCard = ({ course }) => {
         >
           Instructor: {`${tutorId?.firstName} ${tutorId?.lastName}`}
         </Typography>
-        {role === "tutor" && (
-          <Box mt={2}>
-            <Grid container spacing={2}>
-              <Grid item>
-                <Typography variant="body2" sx={{ color: "inherit" }}>
-                  Lessons: {lessonIds.length}
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Typography variant="body2" sx={{ color: "inherit" }}>
-                  Enrolled: {enrollmentCount}
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Rating value={averageRating || 0} readOnly />
-              </Grid>
+        <Box mt={2}>
+          <Grid container spacing={2}>
+            <Grid item>
+              <Typography variant="body2" sx={{ color: "inherit" }}>
+                Lessons: {lessonIds.length}
+              </Typography>
             </Grid>
-          </Box>
-        )}
+            <Grid item>
+              <Typography variant="body2" sx={{ color: "inherit" }}>
+                Enrolled: {enrollmentCount}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Rating value={averageRating || 0} readOnly />
+            </Grid>
+          </Grid>
+        </Box>
       </CardContent>
       {role === "learner" && (
         <CardContent

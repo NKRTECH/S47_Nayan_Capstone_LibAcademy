@@ -3,7 +3,6 @@ import { getCourseCategoriesAPI } from "../../features/courses/CoursesAPI";
 import CoursesByCategory from "./CoursesByCategories";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCoursesByLearnerIdThunk } from "../../features/learners/LearnersThunks";
-import { makeStyles } from "@mui/styles";
 import {
   Button,
   Checkbox,
@@ -12,86 +11,95 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    padding: theme.spacing(2),
+const Root = styled("div")(({ theme }) => ({
+  flexGrow: 1,
+  padding: theme.spacing(2),
+}));
+
+const WelcomeHeading = styled(Typography)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+}));
+
+const FilterButton = styled(Button)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+}));
+
+const FilteringPanel = styled(Paper)(({ theme }) => ({
+  position: "fixed",
+  top: "70px",
+  left: "25%",
+  width: "300px",
+  maxHeight: "calc(100vh - 100px)",
+  overflowY: "auto",
+  padding: "20px",
+  zIndex: 999, // Ensure it's above other elements
+  marginTop: theme.spacing(2),
+}));
+
+const FilterCriterion = styled("div")(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+}));
+
+const CloseFilterButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+}));
+
+const FilterCriterionButton = styled(Button)(({ theme }) => ({
+  width: "100%", // Make buttons equal in width
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: theme.spacing(1, 2),
+  textTransform: "none",
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: theme.shape.borderRadius,
+  transition: "all 0.3s ease",
+  "&:hover": {
+    backgroundColor: theme.palette.action.hover,
+    boxShadow: theme.shadows[4],
   },
-  welcomeHeading: {
-    marginBottom: theme.spacing(2),
-  },
-  filterButton: {
-    marginBottom: theme.spacing(2),
-  },
-  filteringPanel: {
-    position: "fixed",
-    top: "70px",
-    left: "25%",
-    width: "300px",
-    maxHeight: "calc(100vh - 100px)",
-    overflowY: "auto",
-    padding: "20px",
-    zIndex: 999, // Ensure it's above other elements
-    marginTop: theme.spacing(2),
-  },
-  filterCriterion: {
-    marginBottom: theme.spacing(2),
-  },
-  closeFilterButton: {
-    marginTop: theme.spacing(2),
-  },
-  filterCriterionButton: {
-    width: "100%", // Make buttons equal in width
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: theme.spacing(1, 2),
-    textTransform: "none",
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: theme.shape.borderRadius,
-    transition: "all 0.3s ease",
-    "&:hover": {
-      backgroundColor: theme.palette.action.hover,
-      boxShadow: theme.shadows[4],
-    },
-    "&:active": {
-      backgroundColor: theme.palette.action.selected,
-    },
-  },
-  filterCriterionOptions: {
-    padding: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: theme.shape.borderRadius,
-    maxHeight: "150px", // Set a fixed height
-    overflowY: "auto", // Enable scrolling
-  },
-  criterionContent: {
-    flexGrow: 1,
-  },
-  categoryOption: {
-    display: "flex",
-    alignItems: "center",
-    marginBottom: theme.spacing(0.5),
-    padding: theme.spacing(0.5),
-    borderRadius: theme.shape.borderRadius,
-    transition: "background-color 0.3s ease",
-    "&:hover": {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-  checkboxLabel: {
-    marginLeft: theme.spacing(1),
-    fontSize: "0.875rem",
-  },
-  checkbox: {
-    padding: "4px", // Reduce padding around the checkbox
+  "&:active": {
+    backgroundColor: theme.palette.action.selected,
   },
 }));
 
+const FilterCriterionOptions = styled(FormGroup)(({ theme }) => ({
+  padding: theme.spacing(1),
+  marginTop: theme.spacing(1),
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: theme.shape.borderRadius,
+  maxHeight: "150px", // Set a fixed height
+  overflowY: "auto", // Enable scrolling
+}));
+
+const CriterionContent = styled("span")({
+  flexGrow: 1,
+});
+
+const CategoryOption = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  marginBottom: theme.spacing(0.5),
+  padding: theme.spacing(0.5),
+  borderRadius: theme.shape.borderRadius,
+  transition: "background-color 0.3s ease",
+  "&:hover": {
+    backgroundColor: theme.palette.action.hover,
+  },
+}));
+
+const CheckboxLabel = styled(Typography)(({ theme }) => ({
+  marginLeft: theme.spacing(1),
+  fontSize: "0.875rem",
+}));
+
+const CustomCheckbox = styled(Checkbox)({
+  padding: "4px", // Reduce padding around the checkbox
+});
+
 const LearnerHomepage = () => {
-  const classes = useStyles();
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [isFilteringOpen, setIsFilteringOpen] = useState(false);
@@ -179,84 +187,70 @@ const LearnerHomepage = () => {
   };
 
   return (
-    <div className={classes.root}>
-      <div className={classes.content}>
-        <Typography variant="h1" className={classes.welcomeHeading}>
+    <Root>
+      <div>
+        <WelcomeHeading variant="h1">
           Welcome to LibAcademy, Learner!
-        </Typography>
+        </WelcomeHeading>
 
         {/* Filtering Button */}
         <div style={{ position: "relative" }}>
-          <Button
+          <FilterButton
             onClick={toggleFiltering}
             variant="contained"
             color="primary"
-            className={classes.filterButton}
           >
             Filter courses
-          </Button>
+          </FilterButton>
           {isFilteringOpen && (
-            <Paper className={classes.filteringPanel} ref={filteringPanelRef}>
+            <FilteringPanel ref={filteringPanelRef}>
               <Typography variant="h2">Filter by</Typography>
               {filteringCriteria.map((criterion) => (
-                <div key={criterion.id} className={classes.filterCriterion}>
-                  <Button
+                <FilterCriterion key={criterion.id}>
+                  <FilterCriterionButton
                     onClick={() => toggleCriterion(criterion.id)}
                     variant="outlined"
-                    className={classes.filterCriterionButton}
                   >
-                    <span className={classes.criterionContent}>
-                      {criterion.name}
-                    </span>
+                    <CriterionContent>{criterion.name}</CriterionContent>
                     {criterion.isOpen ? "-" : "+"}
-                  </Button>
+                  </FilterCriterionButton>
                   {criterion.isOpen && (
-                    <FormGroup className={classes.filterCriterionOptions}>
+                    <FilterCriterionOptions>
                       {criterion.id === "categories" &&
                         categories.map((category) => (
-                          <div
-                            key={category._id}
-                            className={classes.categoryOption}
-                          >
+                          <CategoryOption key={category._id}>
                             <FormControlLabel
                               control={
-                                <Checkbox
+                                <CustomCheckbox
                                   id={category._id}
                                   checked={selectedCategories.includes(
                                     category._id
                                   )}
                                   onChange={handleCategoryChange}
-                                  className={classes.checkbox}
                                 />
                               }
                               label={
-                                <Typography className={classes.checkboxLabel}>
-                                  {category.name}
-                                </Typography>
+                                <CheckboxLabel>{category.name}</CheckboxLabel>
                               }
                             />
-                          </div>
+                          </CategoryOption>
                         ))}
                       {/* Add more options here */}
-                    </FormGroup>
+                    </FilterCriterionOptions>
                   )}
-                </div>
+                </FilterCriterion>
               ))}
-              <Button
-                onClick={toggleFiltering}
-                variant="outlined"
-                className={classes.closeFilterButton}
-              >
+              <CloseFilterButton onClick={toggleFiltering} variant="outlined">
                 Close
-              </Button>
-            </Paper>
+              </CloseFilterButton>
+            </FilteringPanel>
           )}
         </div>
 
         {/* Pass selected categories to CoursesByCategory */}
         <CoursesByCategory categories={selectedCategories} />
       </div>
-    </div>
+    </Root>
   );
 };
 

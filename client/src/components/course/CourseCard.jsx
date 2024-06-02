@@ -1,56 +1,69 @@
-// CourseCard.jsx
-import { useState } from 'react';
-import PropTypes from 'prop-types';
-import styles from './CourseCard.module.css'; // Import as a module
-import DescriptionModal from './DescriptionModal';
-import { jwtDecode } from 'jwt-decode';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Button,
+  Box,
+  Grid,
+  Rating,
+  Modal,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+import DescriptionModal from "./DescriptionModal";
 
 const CourseCard = ({ course }) => {
-    const { title, description, tutorId, fileUrl, price, enrollmentCount, lessonIds, averageRating } = course;
-    const {enrolledCourses} = useSelector((state) => state.learner)
-    // console.log(typeof price)
-    console.log('enrolledCourses:====== ', enrolledCourses);
-    const BASE_URL = "http://localhost:3000/";
-  const [showModal, setShowModal] = useState(false); // State to manage modal visibility
+  const {
+    title,
+    description,
+    tutorId,
+    fileUrl,
+    price,
+    enrollmentCount,
+    lessonIds,
+    averageRating,
+  } = course;
+  const { enrolledCourses } = useSelector((state) => state.learner);
+  const BASE_URL = "http://localhost:3000/";
+  const [showModal, setShowModal] = useState(false);
   const token = localStorage.getItem("token");
-  const decodedToken = token ? jwtDecode(token) : '';
-  console.log(decodedToken);
-  const role = decodedToken?.role
+  const decodedToken = token ? jwtDecode(token) : "";
+  const role = decodedToken?.role;
   const navigate = useNavigate();
 
   const handleReadMore = (event) => {
-    event.stopPropagation(); // This will prevent the event from propagating to parent elements
-    setShowModal(true); // Show the modal when "Read More" is clicked
+    event.stopPropagation();
+    setShowModal(true);
   };
 
   const handleCloseModal = (event) => {
-    event.stopPropagation(); // This will prevent the event from propagating to parent elements
-    setShowModal(false); // Hide the modal when "Close" is clicked
+    event.stopPropagation();
+    setShowModal(false);
   };
 
   const handleEnrollNow = async (event) => {
     event.preventDefault();
-    event.stopPropagation(); // Prevent the event from propagating to parent elements
+    event.stopPropagation();
     try {
-      // Send a request to your server to create an order
-      const response = await axios.post(`${BASE_URL}api/payments/create-order`, {
-        amount: Number(price * 100), // Convert the price to paise
-        learnerId: decodedToken.learnerId, // Assuming the learner's ID is in the decoded token
-        courseId: course._id, // Assuming the course ID is in the course object
-        currency: "INR", // Currency
-        paymentMethod: "phonepe", // Specify PhonePe as the payment method
-        status: "pending", // Initial status
-      });
+      const response = await axios.post(
+        `${BASE_URL}api/payments/create-order`,
+        {
+          amount: Number(price * 100),
+          learnerId: decodedToken.learnerId,
+          courseId: course._id,
+          currency: "INR",
+          paymentMethod: "phonepe",
+          status: "pending",
+        }
+      );
 
-      console.log("Order created successfully:", response.data);
-
-      // Redirect the user to the PhonePe payment page
-      // The URL should be the one returned by your server after creating the order
-      const paymentPageUrl = response.data.paymentPageUrl; // This should be replaced with the actual URL structure you receive
-      if(paymentPageUrl) {
+      const paymentPageUrl = response.data.paymentPageUrl;
+      if (paymentPageUrl) {
         window.location.href = paymentPageUrl;
       }
     } catch (error) {
@@ -60,75 +73,154 @@ const CourseCard = ({ course }) => {
   };
 
   const enrollButton = () => {
-    // Check if any course object in enrolledCourses has an id matching course._id
     const isEnrolled = enrolledCourses.some(
       (enrolledCourse) => enrolledCourse._id === course._id
     );
-    console.log('isEnrolled: ', isEnrolled);
 
     if (isEnrolled) {
-      return <button className={styles.enrolledButton}>Enrolled</button>;
+      return (
+        <Button variant="contained" color="success">
+          Enrolled
+        </Button>
+      );
     } else {
       return (
-        <button className={styles.enrollButton} onClick={handleEnrollNow}>
+        <Button variant="contained" color="primary" onClick={handleEnrollNow}>
           Enroll Now
-        </button>
+        </Button>
       );
     }
   };
 
-
-
-
-    // Always show the truncated description in the CourseCard
-    const truncatedDescription = description.length > 100
-        ? `${description.substring(0, 100)}...`
-        : description;
+  const truncatedDescription =
+    description.length > 100
+      ? `${description.substring(0, 100)}...`
+      : description;
 
   return (
-    <div className={styles.courseCard}>
+    <Card
+      sx={{
+        width: 300,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       {fileUrl && (
-        <div className={styles.courseImageContainer}>
-          <img src={`${BASE_URL}${fileUrl}`} alt={title} className={styles.courseImage} />
-        </div>
-      )}
-      <div className={styles.courseDetails}>
-        <h2 className={styles.courseTitle}>{title}</h2>
-        <div className={styles.courseDescriptionContainer}>
-          <p className={styles.courseDescription}>
-            {truncatedDescription}
-            {description.length > 100 && (
-              <button className={styles.readMoreButton} onClick={handleReadMore}>
-                  Read More
-              </button>
-            )}
-          </p>
-        </div>
-        <p className={styles.courseTutor}>Instructor: {`${tutorId?.firstName} ${tutorId?.lastName}`}</p>
-        {role === 'tutor' && (
-          <div className={styles.courseStatistics}>
-            <p className={styles.lessonCount}>Lessons: {lessonIds.length}</p>
-            <p className={styles.enrollmentCount}>Enrolled: {enrollmentCount}</p>
-            <p className={styles.averageRating}>Rating: {averageRating || 'N/A'}</p>
-          </div>
-        )}
-      </div>
-      {role === 'learner' && (
-        <div className={styles.courseFooter}>
-          <div className={styles.priceAndEnrollment}>
-            <p className={styles.coursePrice}>Price: ${price}</p>
-            <p className={styles.enrollmentCount}>{enrollmentCount} enrolled</p>
-          </div>
-          {enrollButton()}
-        </div>
-      )}
-      {showModal && (
-        <DescriptionModal
-          description={description}
-          onClose={handleCloseModal}
+        <CardMedia
+          component="img"
+          alt={title}
+          height="140"
+          image={`${BASE_URL}${fileUrl}`}
+          sx={{ filter: "brightness(0.7)", objectFit: "cover" }}
         />
       )}
-    </div>
+      <CardContent
+        sx={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+          color: "#333333",
+        }}
+      >
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="div"
+          sx={{ fontWeight: "bold", color: "inherit" }}
+        >
+          {title}
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ flex: 1, color: "inherit" }}
+        >
+          {truncatedDescription}
+          {description.length > 100 && (
+            <Button
+              size="small"
+              onClick={handleReadMore}
+              sx={{
+                color: "#007bff",
+                textTransform: "none",
+                marginLeft: "5px",
+                backgroundColor: "transparent",
+                "&:hover": { backgroundColor: "transparent" },
+              }}
+            >
+              Read More
+            </Button>
+          )}
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ color: "inherit" }}
+        >
+          Instructor: {`${tutorId?.firstName} ${tutorId?.lastName}`}
+        </Typography>
+        {role === "tutor" && (
+          <Box mt={2}>
+            <Grid container spacing={2}>
+              <Grid item>
+                <Typography variant="body2" sx={{ color: "inherit" }}>
+                  Lessons: {lessonIds.length}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant="body2" sx={{ color: "inherit" }}>
+                  Enrolled: {enrollmentCount}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Rating value={averageRating || 0} readOnly />
+              </Grid>
+            </Grid>
+          </Box>
+        )}
+      </CardContent>
+      {role === "learner" && (
+        <CardContent
+          sx={{
+            background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+            color: "white",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Box>
+              <Typography variant="h6" color="text.primary">
+                Price: ${price}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {enrollmentCount} enrolled
+              </Typography>
+            </Box>
+            {enrollButton()}
+          </Box>
+        </CardContent>
+      )}
+      {showModal && (
+        <Modal
+          open={showModal}
+          onClose={handleCloseModal}
+          aria-labelledby="modal-title"
+          aria-describedby="modal-description"
+        >
+          <DescriptionModal
+            description={description}
+            onClose={handleCloseModal}
+          />
+        </Modal>
+      )}
+    </Card>
   );
 };
 
@@ -145,7 +237,7 @@ CourseCard.propTypes = {
     enrollmentCount: PropTypes.number.isRequired,
     lessonIds: PropTypes.arrayOf(PropTypes.object),
     averageRating: PropTypes.number,
-}).isRequired,
+  }).isRequired,
 };
 
 export default CourseCard;

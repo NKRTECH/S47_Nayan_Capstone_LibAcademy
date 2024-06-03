@@ -32,8 +32,6 @@ const MainRoutes = () => {
   return (
     <Routes>
       {/* User Routes */}
-      <Route path="*" element={<div>404 Not Found</div>} />
-
       <Route path="/" element={<LayoutUser><Protected component={NavUser} allowedRoles={['user']}/></LayoutUser>} />
       <Route path="/tutor/registration" element={<LayoutUser><Protected component={TutorRegistrationPage} allowedRoles={['user']}/></LayoutUser>} />
       <Route path="/tutor/login" element={<LayoutUser><Protected component={TutorLoginPage} allowedRoles={['user']}/></LayoutUser>} />
@@ -64,6 +62,7 @@ const MainRoutes = () => {
       
       {/* Unauthorized Route */}
       <Route path="/unauthorized" element={<Unauthorized  />} />
+      <Route path="*" element={<div>404 Not Found</div>} />
     </Routes>
   );
 };

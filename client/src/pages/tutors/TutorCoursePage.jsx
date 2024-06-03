@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './TutorCoursePage.module.css';
 import CourseCard from '../../components/course/CourseCard';
 import axios from 'axios';
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 
 function TutorCoursePage() {

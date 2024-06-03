@@ -1,7 +1,7 @@
 // LearnersAPI.jsx
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3000/api'; // Replace this with your actual backend API URL
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const setLearnerAuthToken = token => {
   if (token) {

@@ -10,8 +10,7 @@ function TutorLessonContentPage() {
   console.log('lessonId:--', lessonId);
   const dispatch = useDispatch();
   const { lesson, isLoading, error } = useSelector((state) => state.lessons); // Get the lesson from the store
-  const BASE_URL = "http://localhost:3000/"; // This should be the base URL of your backend server
-
+  const FILE_URL = import.meta.env.VITE_FILE_URL;
   useEffect(() => {
     dispatch(fetchLessonById(lessonId)); // Fetch the lesson when the component mounts
   }, [dispatch, lessonId]);
@@ -40,7 +39,7 @@ function TutorLessonContentPage() {
             <div key={index} className="lesson-video-container">
               <div className="lesson-video-wrapper">
                 <video className="lesson-video" controls>
-                  <source src={`${BASE_URL}${mediaItem.url}`} type="video/mp4" />
+                  <source src={`${FILE_URL}${mediaItem.url}`} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               </div>

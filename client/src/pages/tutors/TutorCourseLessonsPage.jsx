@@ -9,7 +9,7 @@ function TutorCourseLessonsPage() {
   const { courseId } = useParams();
   const [lessons, setLessons] = useState([]);
   const [error, setError] = useState(null); // State for error handling
-  const BASE_URL = 'http://localhost:3000/api';
+  const BASE_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchLessons = async () => {

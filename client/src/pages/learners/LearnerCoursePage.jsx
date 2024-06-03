@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -32,32 +32,17 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   overflow: "hidden",
 }));
 
-const Star = styled("div")(({ theme }) => ({
-  position: "absolute",
-  borderRadius: "50%",
-  background: "rgba(255, 255, 255, 0.5)",
-  width: "2px",
-  height: "2px",
-  animation: "$twinkle 1s infinite",
-  zIndex: 1,
-}));
-
-const keyframes = {
-  twinkle: {
-    "0%": { opacity: 1 },
-    "50%": { opacity: 0.5 },
-    "100%": { opacity: 1 },
-  },
-};
-
-const animations = {
-  twinkle: {
-    animationName: "$twinkle",
-    animationDuration: "3s",
-    animationIterationCount: "infinite",
-    animationTimingFunction: "linear",
-  },
-};
+const Star = React.memo(
+  styled("div")(({ theme }) => ({
+    position: "absolute",
+    borderRadius: "50%",
+    background: "rgba(255, 255, 255, 0.5)",
+    width: "2px",
+    height: "2px",
+    animation: "$twinkle 1s infinite",
+    zIndex: 1,
+  }))
+);
 
 const Title = styled(Typography)(({ theme }) => ({
   color: "#ffffff",

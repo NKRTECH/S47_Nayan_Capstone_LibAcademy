@@ -7,13 +7,12 @@ const secret_key = 'mysecretkey';
 
 const loginTutorController = async (req, res) => {
     try {
-        const { username, password } = req.body;
-        const email = username
+        const { email, password } = req.body;
 
         // Check if the tutor exists in the database
         const tutor = await Tutors.findOne({ email }).lean();
         if (!tutor) {
-            return res.status(404).json({ message: 'Tutor not found, here it is problem' });
+            return res.status(404).json({ message: 'Tutor not registered' });
         }
 
         // Compare the provided password with the hashed password
@@ -52,7 +51,7 @@ const loginTutorWithGoogleOAuth = async (req, res) => {
       // Check if the tutor exists
       const tutor = await Tutors.findOne({ email });
       if (!tutor) {
-        return res.status(404).json({ message: 'Tutor not found' });
+        return res.status(404).json({ message: 'Tutor not registered' });
       }
   
       // Generate JWT token with role claim

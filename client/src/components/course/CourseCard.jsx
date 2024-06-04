@@ -29,7 +29,8 @@ const CourseCard = ({ course }) => {
     averageRating,
   } = course;
   const { enrolledCourses } = useSelector((state) => state.learner);
-  const BASE_URL = "http://localhost:3000/";
+const BASE_URL = import.meta.env.VITE_API_URL;
+const FILE_URL = import.meta.env.VITE_FILE_URL;
   const [showModal, setShowModal] = useState(false);
   const token = localStorage.getItem("token");
   const decodedToken = token ? jwtDecode(token) : "";
@@ -50,7 +51,7 @@ const CourseCard = ({ course }) => {
     event.stopPropagation();
     try {
       const response = await axios.post(
-        `${BASE_URL}api/payments/create-order`,
+        `${BASE_URL}/payments/create-order`,
         {
           amount: Number(price * 100),
           learnerId: decodedToken.learnerId,
@@ -110,7 +111,7 @@ const CourseCard = ({ course }) => {
           component="img"
           alt={title}
           height="140"
-          image={`${BASE_URL}${fileUrl}`}
+          image={`${FILE_URL}${fileUrl}`}
           sx={{ filter: "brightness(0.7)", objectFit: "cover" }}
         />
       )}

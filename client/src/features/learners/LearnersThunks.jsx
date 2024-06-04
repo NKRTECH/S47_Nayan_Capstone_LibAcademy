@@ -13,7 +13,7 @@ export const learnerRegisterThunk = createAsyncThunk(
       return response;
     } catch (error) {
       console.error('Error in registerLearner:', error.response.data);
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -32,7 +32,7 @@ export const learnerLoginThunk = createAsyncThunk(
       return response;
     } catch (error) {
       console.error('Error in loginLearner:', error.response.data);
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.response.data.message);
     }
   }
 )

@@ -12,7 +12,7 @@ export const tutorRegisterThunk = createAsyncThunk(
       return response;
     } catch (error) {
       console.error('Error in registerTutor:', error.response.data);
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -28,7 +28,7 @@ export const tutorLoginThunk = createAsyncThunk(
          return response;
        } catch (error) {
          console.error('Error in login:', error.response.data);
-         return thunkAPI.rejectWithValue(error.response.data);
+         return thunkAPI.rejectWithValue(error.response.data.message);
        }
     }
    );

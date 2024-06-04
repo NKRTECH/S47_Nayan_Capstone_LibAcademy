@@ -11,7 +11,7 @@ const loginLearnerController = async (req, res) => {
         // Check if the learner exists in the database and convert to plain object
         const learner = await Learners.findOne({ email }).lean();
         if (!learner) {
-            return res.status(404).json({ message: 'Learner not found' });
+            return res.status(404).json({ message: 'Learner not registered' });
         }
 
         // Compare the provided password with the hashed password
@@ -59,7 +59,7 @@ const loginLearnerWithGoogleOAuth = async (req, res) => {
         // Check if the learner exists in the database
         const learner = await Learners.findOne({ email });
         if (!learner) {
-            return res.status(404).json({ message: 'Learner not found' });
+            return res.status(404).json({ message: 'Learner not registered' });
         }
 
         // Generate JWT token

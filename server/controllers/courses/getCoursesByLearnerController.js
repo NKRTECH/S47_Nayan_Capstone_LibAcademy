@@ -6,6 +6,7 @@ const getCoursesByLearnerController = async (req, res) => {
         // Find the learner by ID and populate the enrolledCoursesIds field excluding the learnerId
         const learner = await Learners.findById(learnerId).populate({
             path: 'enrolledCoursesIds',
+            populate: { path: 'tutorId' },
             select: '-learnerIds', // Exclude the learnerId field
         });
 

@@ -1,5 +1,8 @@
 import {  createAsyncThunk } from '@reduxjs/toolkit';
 import {  fetchCoursesByLearnerIdAPI, learnerLoginAPI, learnerRegistrationAPI } from './LearnersAPI';
+import axios from 'axios';
+
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 // Async thunk action for registering a tutor
 export const learnerRegisterThunk = createAsyncThunk(
@@ -36,6 +39,21 @@ export const learnerLoginThunk = createAsyncThunk(
     }
   }
 )
+
+export const updateLearnerProfileThunk = createAsyncThunk(
+  "learner/updateProfile",
+  async ({ learnerId, updatedData }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${BASE_URL}/learners/update/${learnerId}`,
+        updatedData
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 
 export const fetchCoursesByLearnerIdThunk = createAsyncThunk(
   'learner/fetchCoursesByLearnerId',

@@ -1,0 +1,14 @@
+/* In your CSS file, e.g., LearnerMyCoursesPage.css */
+.my-courses-container {
+  margin-top: 20px;
+}
+
+.my-courses-title {
+  margin-bottom: 20px;
+}
+
+.my-courses-loading,
+.my-courses-error {
+  margin-top: 20px;
+  text-align: center;
+}

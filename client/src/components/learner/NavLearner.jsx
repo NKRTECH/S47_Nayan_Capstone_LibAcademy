@@ -26,8 +26,6 @@ const NavButton = styled(Button)(({ theme }) => ({
 
 const NavLearner = () => {
   const { status, learnerData } = useSelector((state) => state.learner);
-  console.log("learnerData: ", learnerData);
-  console.log("local storage:--", localStorage.getItem("learnerData"));
 
   return (
     <AppBar position="fixed">

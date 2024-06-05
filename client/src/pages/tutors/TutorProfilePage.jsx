@@ -1,28 +1,38 @@
-// TutorProfilePage.jsx
 import React, { useState } from 'react';
-import axios from 'axios'; // Import Axios
+import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import './TutorProfilePage.css'; // Import CSS file for styling
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../features/tutors/TutorsSlice';
+import { Box, Button, Container, TextField, Typography, Paper } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    background: {
+      default: '#181818', // Darker hazy black with a slight whitish tone
+      paper: '#2e2e2e',   // Slightly lighter background for profile box
+    },
+    text: {
+      primary: '#ffffff',
+      secondary: '#b0bec5',
+    },
+  },
+});
 
 const TutorProfilePage = () => {
   const tutorData = useSelector(state => state.tutor.tutorData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // State to manage editable fields
   const [editableData, setEditableData] = useState({
     firstName: tutorData.firstName || '',
     lastName: tutorData.lastName || '',
     email: tutorData.email || '',
-    // Add more fields as needed
   });
 
-  // State to track if the profile is in edit mode
   const [isEditMode, setIsEditMode] = useState(false);
 
-  // Function to handle changes in editable fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditableData(prevState => ({
@@ -31,87 +41,112 @@ const TutorProfilePage = () => {
     }));
   };
 
-  // Function to toggle edit mode
   const toggleEditMode = () => {
     setIsEditMode(prevMode => !prevMode);
   };
 
-  // Function to submit updated profile data
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.put('http://localhost:3000/api/tutor/profile', editableData);
       console.log('Profile updated:', response.data);
-      // Optionally update local state or Redux store with updated data
-      // Exit edit mode after successful update
       toggleEditMode();
     } catch (error) {
       console.error('Error updating profile:', error);
-      // Handle error
     }
   };
 
   const handleLogout = () => {
-    // Dispatch logout action
     dispatch(logout());
-    // Redirect to the login page or perform any other necessary action
     navigate('/');
     window.location.reload();
-
   };
 
   return (
-    <div className="profile-page">
-      <h2 className="profile-heading">Tutor Profile</h2>
-      {isEditMode ? (
-        <form onSubmit={handleSubmit} className="profile-form">
-          <div className="form-group">
-            <label htmlFor="name" className="form-label">First Name:</label>
-            <input 
-              type="text" 
-              id="name" 
-              name="firstName" 
-              value={editableData.firstName} 
-              onChange={handleChange} 
-              className="form-input" 
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="name" className="form-label">Last Name:</label>
-            <input 
-              type="text" 
-              id="name" 
-              name="lastName" 
-              value={editableData.lastName} 
-              onChange={handleChange} 
-              className="form-input" 
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email" className="form-label">Email:</label>
-            <input 
-              type="email" 
-              id="email" 
-              name="email" 
-              value={editableData.email} 
-              readOnly
-              className="form-input" 
-            />
-          </div>
-          <button type="submit" className="btn-submit">Save Changes</button>
-          <button onClick={toggleEditMode} className="btn-cancel">Cancel</button>
-        </form>
-      ) : (
-        <div className="profile-read-only">
-          <div><strong>First Name:</strong> {tutorData.firstName}</div>
-          <div><strong>Last Name:</strong> {tutorData.lastName}</div>
-          <div><strong>Email:</strong> {tutorData.email}</div>
-          <button onClick={toggleEditMode} className="btn-edit">Edit</button>
-          <button onClick={handleLogout} className="btn-logout">Logout</button> {/* Logout button */}
-
-        </div>
-      )}
-    </div>
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: theme.palette.background.default,
+          color: theme.palette.text.primary,
+        }}
+      >
+        <Container maxWidth="sm">
+          <Paper
+            sx={{
+              padding: 4,
+              backgroundColor: theme.palette.background.paper,
+              borderRadius: 2,
+              boxShadow: 3,
+            }}
+          >
+            <Typography variant="h4" gutterBottom>
+              Tutor Profile
+            </Typography>
+            {isEditMode ? (
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  label="First Name"
+                  name="firstName"
+                  value={editableData.firstName}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="normal"
+                  variant="outlined"
+                  InputLabelProps={{ style: { color: theme.palette.text.secondary } }}
+                  InputProps={{ style: { color: theme.palette.text.primary } }}
+                />
+                <TextField
+                  label="Last Name"
+                  name="lastName"
+                  value={editableData.lastName}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="normal"
+                  variant="outlined"
+                  InputLabelProps={{ style: { color: theme.palette.text.secondary } }}
+                  InputProps={{ style: { color: theme.palette.text.primary } }}
+                />
+                <TextField
+                  label="Email"
+                  name="email"
+                  value={editableData.email}
+                  fullWidth
+                  margin="normal"
+                  variant="outlined"
+                  InputProps={{ readOnly: true, style: { color: theme.palette.text.primary } }}
+                />
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+                  <Button type="submit" variant="contained" color="primary">
+                    Save Changes
+                  </Button>
+                  <Button onClick={toggleEditMode} variant="outlined" color="secondary">
+                    Cancel
+                  </Button>
+                </Box>
+              </form>
+            ) : (
+              <Box>
+                <Typography variant="body1"><strong>First Name:</strong> {tutorData.firstName}</Typography>
+                <Typography variant="body1"><strong>Last Name:</strong> {tutorData.lastName}</Typography>
+                <Typography variant="body1"><strong>Email:</strong> {tutorData.email}</Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+                  <Button onClick={toggleEditMode} variant="contained" color="primary">
+                    Edit
+                  </Button>
+                  <Button onClick={handleLogout} variant="outlined" color="secondary">
+                    Logout
+                  </Button>
+                </Box>
+              </Box>
+            )}
+          </Paper>
+        </Container>
+      </Box>
+    </ThemeProvider>
   );
 };
 

@@ -137,7 +137,7 @@ const LearnerHomepage = () => {
     if (Array.isArray(enrolledCourses) && enrolledCourses.length === 0) {
       dispatch(fetchCoursesByLearnerIdThunk(learnerId));
     }
-  }, [dispatch, enrolledCourses, learnerId]);
+  }, []);
 
   const fetchCategories = async () => {
     try {

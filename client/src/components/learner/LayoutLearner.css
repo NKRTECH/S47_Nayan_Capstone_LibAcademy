@@ -1,9 +1,9 @@
-/* Layout.css */
+body {
+  margin: 0;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}
 
-/* If you're using a class for the main content container */
 .main-content {
-    padding-top: 80px; /* Adjust based on the height of your header */
-   }
-   
-   /* If you're styling the <main> tag directly */
-   
+  padding: 16px;
+  padding-top: 64px; /* Ensure content starts below the AppBar */
+}

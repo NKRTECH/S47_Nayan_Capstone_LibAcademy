@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchCoursesByLearnerIdThunk, learnerLoginThunk, learnerRegisterThunk } from './LearnersThunks';
+import { fetchCoursesByLearnerIdThunk, learnerLoginThunk, learnerRegisterThunk, updateLearnerProfileThunk } from './LearnersThunks';
 import { setLearnerAuthToken } from './LearnersAPI';
 
 // Check if learner data exists in local storage
@@ -80,6 +80,20 @@ const learnerSlice = createSlice({
         state.loading = false;
         state.error = action.payload ? action.payload.message : 'Something went wrong';
       })
+      //********************** Handle profile update*********************** */
+      .addCase(updateLearnerProfileThunk.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateLearnerProfileThunk.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        console.log('action pd--',action.payload)
+        state.learnerData = { ...state.learnerData, ...action.payload.learner };
+        localStorage.setItem('learnerData', JSON.stringify(state.learnerData));
+      })
+      .addCase(updateLearnerProfileThunk.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload ? action.payload.message : 'Something went wrong';
+      });
     }
 });
 

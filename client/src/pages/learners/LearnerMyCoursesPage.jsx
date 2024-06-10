@@ -54,11 +54,7 @@ export default function LearnerMyCoursesPage() {
               xs={12}
               sm={6}
               md={4}
-              onClick={() =>
-                navigate(`/learner/courses/${course._id}`, {
-                  state: { course },
-                })
-              }
+
             >
               <CourseCard course={course} />
             </Grid>

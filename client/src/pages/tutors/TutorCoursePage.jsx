@@ -1,60 +1,86 @@
-// TutorCoursePage.jsx
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCoursesByTutor } from '../../features/courses/CoursesThunks';
-import { useNavigate } from 'react-router-dom';
-import styles from './TutorCoursePage.module.css';
-import CourseCard from '../../components/course/CourseCard';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import CourseCard from "../../components/course/CourseCard";
+
 const BASE_URL = import.meta.env.VITE_API_URL;
 
+const CreateCourseButton = styled(Button)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
+  "&:hover": {
+    backgroundColor: theme.palette.primary.dark,
+  },
+}));
+
+const ErrorBox = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(2),
+  backgroundColor: theme.palette.error.main,
+  color: theme.palette.error.contrastText,
+  marginBottom: theme.spacing(2),
+}));
 
 function TutorCoursePage() {
-  // const dispatch = useDispatch();
-  // const { tutorCourses } = useSelector((state) => state.courses);
   const [tutorCourses, setTutorCourses] = useState([]);
   const { tutorData } = useSelector((state) => state.tutor);
-  const [error, setError] = useState(null); // State to hold the error message
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (tutorData) {
-      // dispatch(fetchCoursesByTutor(tutorData._id));
       const fetchCoursesByTutor = async () => {
-        try{
-          const response = await axios.get(`${BASE_URL}/courses/fetchCoursesByTutor/${tutorData._id}`);
-          console.log('response:--',response)
+        try {
+          const response = await axios.get(
+            `${BASE_URL}/courses/fetchCoursesByTutor/${tutorData._id}`
+          );
           setTutorCourses(response.data.courses);
-          setError(null); // Clear any previous error
-        } catch(error) {
-          console.error('Error fetching courses:', error);
-          setError(error.response.data.message); // Set the error message
+          setError(null);
+        } catch (error) {
+          console.error("Error fetching courses:", error);
+          setError(error.response.data.message);
         }
-      }
+      };
       fetchCoursesByTutor();
     }
   }, [tutorData]);
 
   useEffect(() => {
-    console.log('Tutor courses:', tutorCourses); // Log the tutorCourses data
+    console.log("Tutor courses:", tutorCourses);
   }, [tutorCourses]);
 
-  const handleCourseClick = (courseId) => {
-    navigate(`/tutor/courses/${courseId}/lessons`); // Navigate to the lessons page for the course
-  };
-
   return (
-    <div>
-      <button className={styles.createCourseBtn} onClick={() => navigate("/tutor/courses/create")}>Create Course</button>
-      {error && <div className={styles.error}>{error}</div>} {/* Display the error message */}
-      <div className={styles.courseCardContainer}> {/* Use module-based class name */}
+    <Box
+      sx={{ padding: "16px", minHeight: "100vh", width: "100%" }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: 'left',
+          marginBottom: "16px",
+        }}
+      >
+        <CreateCourseButton
+          variant="contained"
+          onClick={() => navigate("/tutor/courses/create")}
+        >
+          Create Course
+        </CreateCourseButton>
+      </Box>
+      {error && <ErrorBox>{error}</ErrorBox>}
+      <Grid container spacing={2}>
         {tutorCourses.map((course) => (
-          <div key={course._id} className={styles.courseCardWrapper} onClick={() => handleCourseClick(course._id)}>
-            <CourseCard course={course} />
-          </div>
+          <Grid item xs={12} sm={6} md={4} key={course._id}>
+            <Box sx={{ height: "100%" }}>
+              <CourseCard course={course} />
+            </Box>
+          </Grid>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </Box>
   );
 }
 

@@ -32,6 +32,7 @@ const CourseCard = ({ course }) => {
 const BASE_URL = import.meta.env.VITE_API_URL;
 const FILE_URL = import.meta.env.VITE_FILE_URL;
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const decodedToken = token ? jwtDecode(token) : "";
   const role = decodedToken?.role;
@@ -72,6 +73,16 @@ const FILE_URL = import.meta.env.VITE_FILE_URL;
     }
   };
 
+  const handleCourseClick = (event) => {
+    event.stopPropagation();
+    if(role === "learner"){
+      navigate(`/learner/courses/${course._id}`, { state: { course } });
+    }
+    else if(role === "tutor"){
+      navigate(`${course._id}/lessons`);
+    }
+  };
+
   const enrollButton = () => {
     const isEnrolled = enrolledCourses.some(
       (enrolledCourse) => enrolledCourse._id === course._id
@@ -105,6 +116,7 @@ const FILE_URL = import.meta.env.VITE_FILE_URL;
         display: "flex",
         flexDirection: "column",
       }}
+      onClick={handleCourseClick}
     >
       {fileUrl && (
         <CardMedia

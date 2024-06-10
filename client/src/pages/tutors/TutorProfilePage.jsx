@@ -66,12 +66,13 @@ const TutorProfilePage = () => {
     <ThemeProvider theme={theme}>
       <Box
         sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          minHeight: "100vh", // Ensure this covers the full height of the viewport
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           backgroundColor: theme.palette.background.default,
           color: theme.palette.text.primary,
+          width: "100%",
         }}
       >
         <Container maxWidth="sm">
@@ -96,7 +97,9 @@ const TutorProfilePage = () => {
                   fullWidth
                   margin="normal"
                   variant="outlined"
-                  InputLabelProps={{ style: { color: theme.palette.text.secondary } }}
+                  InputLabelProps={{
+                    style: { color: theme.palette.text.secondary },
+                  }}
                   InputProps={{ style: { color: theme.palette.text.primary } }}
                 />
                 <TextField
@@ -107,7 +110,9 @@ const TutorProfilePage = () => {
                   fullWidth
                   margin="normal"
                   variant="outlined"
-                  InputLabelProps={{ style: { color: theme.palette.text.secondary } }}
+                  InputLabelProps={{
+                    style: { color: theme.palette.text.secondary },
+                  }}
                   InputProps={{ style: { color: theme.palette.text.primary } }}
                 />
                 <TextField
@@ -117,27 +122,60 @@ const TutorProfilePage = () => {
                   fullWidth
                   margin="normal"
                   variant="outlined"
-                  InputProps={{ readOnly: true, style: { color: theme.palette.text.primary } }}
+                  InputProps={{
+                    readOnly: true,
+                    style: { color: theme.palette.text.primary },
+                  }}
                 />
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mt: 2,
+                  }}
+                >
                   <Button type="submit" variant="contained" color="primary">
                     Save Changes
                   </Button>
-                  <Button onClick={toggleEditMode} variant="outlined" color="secondary">
+                  <Button
+                    onClick={toggleEditMode}
+                    variant="outlined"
+                    color="secondary"
+                  >
                     Cancel
                   </Button>
                 </Box>
               </form>
             ) : (
               <Box>
-                <Typography variant="body1"><strong>First Name:</strong> {tutorData.firstName}</Typography>
-                <Typography variant="body1"><strong>Last Name:</strong> {tutorData.lastName}</Typography>
-                <Typography variant="body1"><strong>Email:</strong> {tutorData.email}</Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-                  <Button onClick={toggleEditMode} variant="contained" color="primary">
+                <Typography variant="body1">
+                  <strong>First Name:</strong> {tutorData.firstName}
+                </Typography>
+                <Typography variant="body1">
+                  <strong>Last Name:</strong> {tutorData.lastName}
+                </Typography>
+                <Typography variant="body1">
+                  <strong>Email:</strong> {tutorData.email}
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mt: 2,
+                  }}
+                >
+                  <Button
+                    onClick={toggleEditMode}
+                    variant="contained"
+                    color="primary"
+                  >
                     Edit
                   </Button>
-                  <Button onClick={handleLogout} variant="outlined" color="secondary">
+                  <Button
+                    onClick={handleLogout}
+                    variant="outlined"
+                    color="secondary"
+                  >
                     Logout
                   </Button>
                 </Box>

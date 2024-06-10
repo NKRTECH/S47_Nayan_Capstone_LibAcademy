@@ -1,9 +1,0 @@
-body {
-  margin: 0;
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-}
-
-.main-content {
-  padding: 16px;
-  padding-top: 64px; /* Ensure content starts below the AppBar */
-}

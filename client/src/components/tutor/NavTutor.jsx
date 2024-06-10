@@ -1,33 +1,59 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import './NavTutor.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
+
+const Logo = styled(Link)(({ theme }) => ({
+  flexGrow: 1,
+  textDecoration: "none",
+  color: theme.palette.primary.contrastText,
+  fontSize: 24,
+  fontWeight: "bold",
+}));
+
+const NavButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.primary.contrastText,
+  textDecoration: "none",
+  marginRight: theme.spacing(2),
+  "&:hover": {
+    backgroundColor: theme.palette.primary.light,
+  },
+  "&:last-child": {
+    marginRight: 0,
+  },
+}));
 
 const NavTutor = () => {
-  const { status, tutorData } = useSelector(state => state.tutor);
-  // console.log('tutorData:--',tutorData)
-  // console.log(localStorage.getItem('tutorData'));
-  // console.log('status:--',status);
+  const { status, tutorData } = useSelector((state) => state.tutor);
 
   return (
-    <header className="header">
-      <div className="logo">
-        <Link to="/">LibAcademy</Link>
-      </div>
-      <nav className="navigation">
-        <ul>
-          <li><Link to="/tutor/">Home</Link></li>
-          <li><Link to="/tutor/courses">Courses</Link></li>
-          <li><Link to="tutor/about">About Us</Link></li>
-          
-          {/* Conditionally render the tutor's name if registration is successful */}
+    <AppBar position="fixed">
+      <Toolbar>
+        <Logo to="/">LibAcademy</Logo>
+        <Box display="flex" alignItems="center">
+          <NavButton component={Link} to="/tutor/">
+            Home
+          </NavButton>
+          <NavButton component={Link} to="/tutor/courses">
+            Courses
+          </NavButton>
+          <NavButton component={Link} to="/tutor/about">
+            About Us
+          </NavButton>
           {tutorData && (
-            <li>Welcome &nbsp;{tutorData.firstName}</li>
-          ) }
-          {tutorData && <li><Link to="/tutor/profile">Profile</Link></li>}
-        </ul>
-      </nav>
-    </header>
+            <>
+              <Typography variant="h6" sx={{ marginRight: 2 }}>
+                Welcome, {tutorData.firstName}
+              </Typography>
+              <NavButton component={Link} to="/tutor/profile">
+                Profile
+              </NavButton>
+            </>
+          )}
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 };
 

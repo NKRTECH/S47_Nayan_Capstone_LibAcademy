@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {registerTutorController, registerTutorWithGoogleOAuth} = require('../../controllers/tutors/registerTutorController');
-const {loginTutorController, loginTutorWithGoogleOAuth} = require('../../controllers/tutors/LoginTutorcontroller');
+const {loginTutorController, loginTutorWithGoogleOAuth} = require('../../controllers/tutors/loginTutorController');
 
 router.post('/register', registerTutorController);
 router.post('/register/google', registerTutorWithGoogleOAuth);

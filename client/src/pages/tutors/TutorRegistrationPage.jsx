@@ -87,6 +87,7 @@ const TutorRegistrationPage = () => {
         console.log('action object--', action)
         if (action.type === "tutor/register/fulfilled") {
           navigate("/tutor/");
+          window.location.reload();
         } else if (action.type === "tutor/register/rejected") {
           console.error("Registration failed:", action.payload);
           setError(action.payload || "Registration failed");

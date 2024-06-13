@@ -80,6 +80,7 @@ const TutorLoginPage = () => {
       .then((action) => {
         if (action.type === "tutor/login/fulfilled") {
           navigate("/tutor/");
+          window.location.reload();
         }else if(action.type === "tutor/login/rejected"){
           setErrorMessage(action.payload);
           setOpenSnackbar(true);

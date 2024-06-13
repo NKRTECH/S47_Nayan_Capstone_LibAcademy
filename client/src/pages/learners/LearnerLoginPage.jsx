@@ -81,6 +81,7 @@ const LearnerLoginPage = () => {
       .then((action) => {
         if (action.type === "learner/login/fulfilled") {
           navigate("/learner/");
+          window.location.reload();
         }else if(action.type === "learner/login/rejected"){
           setErrorMessage(action.payload);
           setOpenSnackbar(true);

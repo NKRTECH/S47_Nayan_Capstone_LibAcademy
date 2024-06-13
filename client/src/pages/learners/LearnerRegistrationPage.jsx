@@ -83,6 +83,7 @@ const LearnerRegistrationPage = () => {
       .then((action) => {
         if (action.type === "learner/register/fulfilled") {
           navigate("/learner/");
+          window.location.reload();
         } else if (action.type === "learner/register/rejected") {
           setLocalError(action.payload);
           setOpenSnackbar(true);

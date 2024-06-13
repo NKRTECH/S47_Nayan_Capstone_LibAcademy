@@ -6,6 +6,8 @@ import LayoutLearner from './components/learner/LayoutLearner';
 import Unauthorized from './Unauthorized';
 import { RoleBasedRoutes } from './utils/RoleBasedRoutes';
 import { jwtDecode } from 'jwt-decode';
+import Protected from './Protected';
+import { RoleBasedLazyLoad } from './utils/RoleBasedLazyLoads';
 
 // Dummy function to simulate fetching user role
 const getUserRole = () => {
@@ -22,18 +24,37 @@ const MainRoutes = () => {
 
   return (
     <>
-      <Routes>
-        {userRole === 'user' && (
-          <Route path="/*" element={<LayoutUser><RoleBasedRoutes userRole={userRole} /></LayoutUser>} />
-        )}
-        {userRole === 'tutor' && (
-          <Route path="/*" element={<LayoutTutor><RoleBasedRoutes userRole={userRole} /></LayoutTutor>} />
-        )}
-        {userRole === 'learner' && (
-          <Route path="/*" element={<LayoutLearner><RoleBasedRoutes userRole={userRole} /></LayoutLearner>} />
-        )}
-        <Route path="*" element={<div>404 Not Found</div>} />
-      </Routes>
+   <Routes>
+      {/* User Routes */}
+      <Route path="/" element={<LayoutUser><Protected component={RoleBasedLazyLoad(() => import('./components/user/NavUser'), ['user'], userRole)} allowedRoles={['user']} /></LayoutUser>} />
+      <Route path="/tutor/registration" element={<LayoutUser><Protected component={RoleBasedLazyLoad(() => import('./pages/tutors/TutorRegistrationPage'), ['user'], userRole)} allowedRoles={['user']} /></LayoutUser>} />
+      <Route path="/tutor/login" element={<LayoutUser><Protected component={RoleBasedLazyLoad(() => import('./pages/tutors/TutorLoginPage'), ['user'], userRole)} allowedRoles={['user']} /></LayoutUser>} />
+      <Route path="/learner/login" element={<LayoutUser><Protected component={RoleBasedLazyLoad(() => import('./pages/learners/LearnerLoginPage'), ['user'], userRole)} allowedRoles={['user']} /></LayoutUser>} />
+      <Route path="/learner/registration" element={<LayoutUser><Protected component={RoleBasedLazyLoad(() => import('./pages/learners/LearnerRegistrationPage'), ['user'], userRole)} allowedRoles={['user']} /></LayoutUser>} />
+
+      {/* Tutor Routes */}
+      <Route path="/tutor/" element={<LayoutTutor><Protected component={RoleBasedLazyLoad(() => import('./pages/tutors/HomePageTutor'), ['tutor'], userRole)} allowedRoles={['tutor']} /></LayoutTutor>} />
+      <Route path="/tutor/profile" element={<LayoutTutor><Protected component={RoleBasedLazyLoad(() => import('./pages/tutors/TutorProfilePage'), ['tutor'], userRole)} allowedRoles={['tutor']} /></LayoutTutor>} />
+      <Route path='/tutor/courses' element={<LayoutTutor><Protected component={RoleBasedLazyLoad(() => import('./pages/tutors/TutorCoursePage'), ['tutor'], userRole)} allowedRoles={['tutor']} /></LayoutTutor>} />
+      <Route path="/tutor/courses/create" element={<LayoutTutor><Protected component={RoleBasedLazyLoad(() => import('./pages/tutors/UploadCoursePage'), ['tutor'], userRole)} allowedRoles={['tutor']} /></LayoutTutor>} />
+      <Route path='/tutor/courses/:courseId/createlesson' element={<LayoutTutor><Protected component={RoleBasedLazyLoad(() => import('./pages/tutors/CreateLessons'), ['tutor'], userRole)} allowedRoles={['tutor']} /></LayoutTutor>} />
+      <Route path='/tutor/courses/:courseId/lessons' element={<LayoutTutor><Protected component={RoleBasedLazyLoad(() => import('./pages/tutors/TutorCourseLessonsPage'), ['tutor'], userRole)} allowedRoles={['tutor']} /></LayoutTutor>} />
+      <Route path='/tutor/courses/:courseId/lessons/:lessonId' element={<LayoutTutor><Protected component={RoleBasedLazyLoad(() => import('./pages/tutors/TutorLessonContentPage'), ['tutor'], userRole)} allowedRoles={['tutor']} /></LayoutTutor>} />
+      <Route path="/tutor/courses/:courseId/lessons/edit/:lessonId" element={<LayoutTutor><Protected component={RoleBasedLazyLoad(() => import('./pages/tutors/EditLessonPage'), ['tutor'], userRole)} allowedRoles={['tutor']} /></LayoutTutor>} />
+
+      {/* Learner Routes */}
+      <Route path="/learner/" element={<LayoutLearner><Protected component={RoleBasedLazyLoad(() => import('./pages/learners/LearnerHomePage'), ['learner'], userRole)} allowedRoles={['learner']} /></LayoutLearner>} />
+      <Route path="/learner/profile" element={<LayoutLearner><Protected component={RoleBasedLazyLoad(() => import('./pages/learners/LearnerProfilePage'), ['learner'], userRole)} allowedRoles={['learner']} /></LayoutLearner>} />
+      <Route path='/learner/courses/:courseId' element={<LayoutLearner><Protected component={RoleBasedLazyLoad(() => import('./pages/learners/LearnerCoursePage'), ['learner'], userRole)} allowedRoles={['learner']} /></LayoutLearner>} />
+      <Route path='/learner/courses/:courseId/lessons/:lessonId' element={<LayoutLearner><Protected component={RoleBasedLazyLoad(() => import('./pages/learners/LearnerCourseLessonsPage'), ['learner'], userRole)} allowedRoles={['learner']} /></LayoutLearner>} />
+      <Route path='/learner/my-courses' element={<LayoutLearner><Protected component={RoleBasedLazyLoad(() => import('./pages/learners/LearnerMyCoursesPage'), ['learner'], userRole)} allowedRoles={['learner']} /></LayoutLearner>} />
+      <Route path="/payment-redirect" element={<LayoutLearner><Protected component={RoleBasedLazyLoad(() => import('./pages/learners/PaymentRedirect'), ['learner'], userRole)} allowedRoles={['learner']} /></LayoutLearner>} />
+      <Route path='/payment-success' element={<LayoutLearner><Protected component={RoleBasedLazyLoad(() => import('./pages/learners/PaymentSuccess'), ['learner'], userRole)} allowedRoles={['learner']} /></LayoutLearner>} />
+
+      {/* Unauthorized Route */}
+      <Route path="/unauthorized" element={<Unauthorized />} />
+      <Route path="*" element={<div>404 Not Found</div>} />
+    </Routes>
     </>
   );
 };

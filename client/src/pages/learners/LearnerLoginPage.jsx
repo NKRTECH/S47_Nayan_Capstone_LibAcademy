@@ -68,6 +68,7 @@ const LearnerLoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('login button clicked');
 
     // Check form validity before dispatching the thunk
     const form = e.target;
@@ -81,7 +82,7 @@ const LearnerLoginPage = () => {
       .then((action) => {
         if (action.type === "learner/login/fulfilled") {
           navigate("/learner/");
-          window.location.reload();
+          // window.location.reload();
         }else if(action.type === "learner/login/rejected"){
           setErrorMessage(action.payload);
           setOpenSnackbar(true);

@@ -1,0 +1,18 @@
+meta {
+  name: Login Learner
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/api/tutors/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email":"nkr@nkr.com",
+    "password":"123"
+  }
+}

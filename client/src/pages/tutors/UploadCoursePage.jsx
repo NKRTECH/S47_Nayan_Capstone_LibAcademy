@@ -1,39 +1,66 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCourseThunk } from '../../features/courses/CoursesThunks';
-import './UploadCoursePage.css'; // Import CSS file for styling
 import { getCourseCategoriesAPI } from '../../features/courses/CoursesAPI';
 import { useNavigate } from 'react-router-dom';
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  CircularProgress,
+  Alert,
+  Box,
+  Paper,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+  marginTop: theme.spacing(4),
+  padding: theme.spacing(3),
+  backgroundColor: theme.palette.background.paper,
+  borderRadius: theme.shape.borderRadius,
+}));
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  marginRight: theme.spacing(2),
+}));
 
 const UploadCoursePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const tutorId = useSelector((state) => state.tutor.tutorData._id);
   const isUploaded = useSelector((state) => state.courses.isUploaded);
-  console.log(isUploaded);
-  
+
   const [courseData, setCourseData] = useState({
-    category: [],
+    category: '',
     title: '',
     description: '',
     tutorId: tutorId,
-    file: null, // For storing the uploaded file
-    price: '', // Course price
-    duration: '', // Estimated time to complete the course
-    startDate: '' // Start date of the course, if applicable
- });
+    file: null,
+    price: '',
+    duration: '',
+    startDate: ''
+  });
 
   const [courseCategories, setCourseCategories] = useState([]);
-  
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const fetchCategories = async () => {
     try {
       const categories = await getCourseCategoriesAPI();
-      console.log('Categories: ', categories);
       setCourseCategories(categories);
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
   };
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -44,21 +71,6 @@ const UploadCoursePage = () => {
       [e.target.name]: e.target.value
     });
   };
-  const handleCategoryChange = (e) => {
-    const { name, checked, value } = e.target;
-    if (checked) {
-      setCourseData((prevState) => ({
-        ...prevState,
-        category: [...prevState.category, value],
-      }));
-    } else {
-      setCourseData((prevState) => ({
-        ...prevState,
-        category: prevState.category.filter((categoryId) => categoryId !== value),
-      }));
-    }
-  };
-  
 
   const handleFileChange = (e) => {
     setCourseData({
@@ -69,88 +81,140 @@ const UploadCoursePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
     const formData = new FormData();
     formData.append('category', courseData.category);
     formData.append('title', courseData.title);
     formData.append('description', courseData.description);
     formData.append('tutorId', courseData.tutorId);
     formData.append('file', courseData.file);
-    formData.append('price', courseData.price); // Course price
-    formData.append('duration', courseData.duration); // Estimated time to complete the course
-    formData.append('startDate', courseData.startDate); // Start date of the course, if applicable
-    // console.log('typeof: ',typeof formData)
-    // console.log('formData: ', formData)
-    // console.log(createCourseThunk)
+    formData.append('price', courseData.price);
+    formData.append('duration', courseData.duration);
+    formData.append('startDate', courseData.startDate);
 
-    // Dispatch action to update Redux store with the newly created course
-    dispatch(createCourseThunk(formData))
-    .then((action)=>{
-        console.log('action:--', action);
-        if(action.type === 'courses/create/fulfilled'){
-           console.log('Course created successfully:--', action.payload);
-            navigate('/tutor/courses');
-        }
-    }).catch((error) => {
-        console.error('Error creating course:', error);
-    });
+    try {
+      const action = await dispatch(createCourseThunk(formData));
+      if (action.type === 'courses/create/fulfilled') {
+        navigate('/tutor/courses');
+      }
+    } catch (err) {
+      setError('Error creating course');
+    } finally {
+      setIsLoading(false);
+    }
   };
-  useEffect(()=>{
-    if(isUploaded){
+
+  useEffect(() => {
+    if (isUploaded) {
       navigate('/tutor/courses');
     }
-  },[isUploaded, navigate])
+  }, [isUploaded, navigate]);
 
   return (
-    <div className="upload-course-container">
-      <h2>Upload New Course</h2>
-      <form onSubmit={handleSubmit} className="upload-course-form">
-        <div className="form-group">
-          <label htmlFor="title">Title:</label>
-          <input type="text" id="title" name="title" value={courseData.title} onChange={handleChange} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="description">Description:</label>
-          <textarea id="description" name="description" value={courseData.description} onChange={handleChange}></textarea>
-        </div>
-
-        <div className="form-group">
-          <label>Categories:</label>
-          {courseCategories.map(category => (
-            <div key={category._id}>
-              <input
-              type="checkbox"
-              id={category._id}
-              name="category"
-              value={category._id}
-              checked={courseData.category.includes(category._id)}
-              onChange={handleCategoryChange}
-              />
-              <label htmlFor={category._id}>{category.name}</label>
-            </div>
-          ))}
-        </div>
-        <div className="form-group">
-          <label htmlFor="file">File:</label>
-          <input type="file" id="file" onChange={handleFileChange} />
-        </div>
-
-        {/* New fields for price, duration, and start date */}
-        <div className="form-group">
-          <label htmlFor="price">Price:</label>
-          <input type="number" id="price" name="price" value={courseData.price} onChange={handleChange} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="duration">Duration:</label>
-          <input type="text" id="duration" name="duration" value={courseData.duration} onChange={handleChange} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="startDate">Start Date:</label>
-          <input type="date" id="startDate" name="startDate" value={courseData.startDate} onChange={handleChange} />
-        </div>
-
-        <button type="submit" className="submit-btn">Upload Course</button>
+    <StyledContainer component={Paper}>
+      <Typography variant="h4" gutterBottom>
+        Upload New Course
+      </Typography>
+      {error && <Alert severity="error">{error}</Alert>}
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <TextField
+          label="Title"
+          variant="outlined"
+          fullWidth
+          value={courseData.title}
+          onChange={handleChange}
+          name="title"
+          margin="normal"
+          required
+        />
+        <TextField
+          label="Description"
+          variant="outlined"
+          fullWidth
+          multiline
+          rows={4}
+          value={courseData.description}
+          onChange={handleChange}
+          name="description"
+          margin="normal"
+          required
+        />
+        <FormControl fullWidth margin="normal" variant="outlined">
+          <InputLabel>Category</InputLabel>
+          <Select
+            label="Category"
+            value={courseData.category}
+            onChange={handleChange}
+            name="category"
+            required
+          >
+            {courseCategories.map((category) => (
+              <MenuItem key={category._id} value={category._id}>
+                {category.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Box mt={2}>
+          <input
+            type="file"
+            onChange={handleFileChange}
+            accept="application/pdf, image/*, video/*"
+            style={{ display: 'none' }}
+            id="file-upload"
+          />
+          <label htmlFor="file-upload">
+            <Button variant="contained" component="span">
+              Upload File
+            </Button>
+            {courseData.file && (
+              <Typography variant="body2" sx={{ marginTop: 1 }}>
+                {courseData.file.name}
+              </Typography>
+            )}
+          </label>
+        </Box>
+        <TextField
+          label="Price"
+          variant="outlined"
+          fullWidth
+          type="number"
+          value={courseData.price}
+          onChange={handleChange}
+          name="price"
+          margin="normal"
+        />
+        <TextField
+          label="Duration"
+          variant="outlined"
+          fullWidth
+          value={courseData.duration}
+          onChange={handleChange}
+          name="duration"
+          margin="normal"
+        />
+        <TextField
+          label="Start Date"
+          variant="outlined"
+          fullWidth
+          type="date"
+          value={courseData.startDate}
+          onChange={handleChange}
+          name="startDate"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          margin="normal"
+        />
+        <Box display="flex" justifyContent="flex-start" alignItems="center" mt={2}>
+          <StyledButton variant="contained" color="primary" type="submit" disabled={isLoading}>
+            {isLoading ? <CircularProgress size={24} /> : 'Upload Course'}
+          </StyledButton>
+        </Box>
       </form>
-    </div>
+    </StyledContainer>
   );
 };
 

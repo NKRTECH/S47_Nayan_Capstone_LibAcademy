@@ -11,6 +11,8 @@ const getCoursesByCategoriesController = require("../../controllers/courses/getC
 const { isAuthenticated, checkRole } = require('../../middleware/authMiddleware');
 const getCoursesByTutor = require("../../controllers/courses/getCoursesByTutor");
 const getCoursesByLearnerController = require("../../controllers/courses/getCoursesByLearnerController");
+const { getCourseRatings, addOrUpdateRating, deleteRating, fetchUserRating } = require("../../controllers/courses/handleCourseRatingController");
+const { getCourseReviews, addCourseReview, deleteCourseReview, updateCourseReview } = require("../../controllers/courses/handleCourseReviewController");
 
 // Multer configuration for handling file uploads
 const storage = multer.diskStorage({
@@ -39,5 +41,15 @@ router.get('/fetchCoursesByTutor/:tutorId', getCoursesByTutor);
 
 // GET route for fetching courses in which a learner is enrolled
 router.get('/fetchCoursesByLearnerId/:learnerId', getCoursesByLearnerController);
+
+router.post('/:courseId/reviews', addCourseReview);
+router.get('/:courseId/reviews', getCourseReviews);
+router.put('/:courseId/reviews/:reviewId', updateCourseReview);
+router.delete('/:courseId/reviews/:reviewId', deleteCourseReview);
+
+router.get('/:courseId/ratings', getCourseRatings);
+router.get('/:courseId/ratings/:learnerId', fetchUserRating);
+router.post('/:courseId/ratings', addOrUpdateRating);
+router.delete('/:courseId/ratings/:ratingId', deleteRating);
 
 module.exports = router

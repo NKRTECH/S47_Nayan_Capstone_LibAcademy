@@ -12,6 +12,7 @@ import {
   Container,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import CourseReviews from "../../components/course/CourseReviews";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -133,6 +134,7 @@ function TutorCourseLessonsPage() {
           ))}
         </Grid>
       </Container>
+      <CourseReviews courseId={courseId} />
     </Box>
   );
 }

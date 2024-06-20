@@ -13,10 +13,13 @@ const courseSchema = new mongoose.Schema({
   // New fields for popularity, reviews, and stars
   popularity: { type: Number, default: 0 }, // A numeric value representing the course's popularity
   reviews: [{ // An array of review objects
-     learnerIds: { type: mongoose.Schema.Types.ObjectId, ref: 'Learners' }, // The user who wrote the review
-     rating: { type: Number, min: 1, max: 5 }, // The rating given by the user (1-5 stars)
+     learnerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Learners' }, // The user who wrote the review
      comment: { type: String }, // The review comment
      createdAt: { type: Date, default: Date.now } // The date the review was created
+  }],
+  ratings: [{ // An array of rating objects
+    learnerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Learners', unique: true }, // The user who rated
+    rating: { type: Number, min: 1, max: 5 } // The rating given by the user (1-5 stars)
   }],
   averageRating: { type: Number, default: 0 }, // The average rating of the course
   totalRatings: { type: Number, default: 0 }, // The total number of ratings the course has received

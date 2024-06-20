@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { CircularProgress, Typography, Paper, Box } from "@mui/material";
 import { styled } from "@mui/system";
 import LessonCard from "../../components/learner/LessonCard";
+import CourseReviews from "../../components/course/CourseReviews";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -119,40 +120,43 @@ const LearnerCoursePage = () => {
   }, [courseId, learnerId]);
 
   return (
-    <Container>
-      <StyledPaper elevation={0}>
-        {[...Array(200)].map((_, index) => (
-          <Star
-            key={index}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-            }}
-          />
-        ))}
-        <Title variant="h2">Lessons for {course?.title}</Title>
-        <Subtitle variant="h5">
-          Instructor:{" "}
-          {`${course?.tutorId?.firstName} ${course?.tutorId?.lastName}`}
-        </Subtitle>
-        {loading ? (
-          <LoadingSpinner />
-        ) : error ? (
-          <ErrorMessage variant="body1">{error}</ErrorMessage>
-        ) : (
-          <LessonsContainer>
-            {lessons?.map((lesson) => (
-              <LessonCard
-                key={lesson._id}
-                lesson={lesson}
-                isEnrolled={isEnrolled}
-              />
-            ))}
-          </LessonsContainer>
-        )}
-      </StyledPaper>
-    </Container>
+    <>
+      <Container>
+        <StyledPaper elevation={0}>
+          {[...Array(200)].map((_, index) => (
+            <Star
+              key={index}
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+              }}
+            />
+          ))}
+          <Title variant="h2">Lessons for {course?.title}</Title>
+          <Subtitle variant="h5">
+            Instructor:{" "}
+            {`${course?.tutorId?.firstName} ${course?.tutorId?.lastName}`}
+          </Subtitle>
+          {loading ? (
+            <LoadingSpinner />
+          ) : error ? (
+            <ErrorMessage variant="body1">{error}</ErrorMessage>
+          ) : (
+            <LessonsContainer>
+              {lessons?.map((lesson) => (
+                <LessonCard
+                  key={lesson._id}
+                  lesson={lesson}
+                  isEnrolled={isEnrolled}
+                />
+              ))}
+            </LessonsContainer>
+          )}
+        </StyledPaper>
+      </Container>
+      <CourseReviews courseId={courseId} />
+    </>
   );
 };
 

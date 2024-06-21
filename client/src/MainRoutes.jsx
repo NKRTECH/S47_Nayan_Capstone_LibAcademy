@@ -19,8 +19,8 @@ const getUserRole = () => {
     return role;
 };
 
+
 const MainRoutes = () => {
-  const userRole = getUserRole();
 
   return (
     <>
